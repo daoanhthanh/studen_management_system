@@ -1,30 +1,24 @@
-package hanu.edu.ems.resources.Enrollment;
+package hanu.edu.ems.resources.Department;
 
-import hanu.edu.ems.resources.Enrollment.entity.Enrollment;
+import hanu.edu.ems.resources.Department.entity.Department;
 import io.swagger.v3.oas.annotations.responses.ApiResponse;
 import io.swagger.v3.oas.annotations.responses.ApiResponses;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
-import org.springframework.web.bind.annotation.DeleteMapping;
-import org.springframework.web.bind.annotation.GetMapping;
-import org.springframework.web.bind.annotation.PathVariable;
-import org.springframework.web.bind.annotation.PostMapping;
-import org.springframework.web.bind.annotation.PutMapping;
-import org.springframework.web.bind.annotation.RequestBody;
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RestController;
+import org.springframework.web.bind.annotation.*;
 
 import javax.validation.Valid;
 
 @RestController
-@RequestMapping("/enrollments")
-public class EnrollmentController {
-    private final EnrollmentService enrollmentService;
+@RequestMapping("/departments")
+public class DepartmentController {
+
+    private final DepartmentService departmentService;
 
     @Autowired
-    public EnrollmentController(EnrollmentService enrollmentService) {
-        this.enrollmentService = enrollmentService;
+    public DepartmentController(DepartmentService departmentService) {
+        this.departmentService = departmentService;
     }
 
     @PostMapping
@@ -34,13 +28,13 @@ public class EnrollmentController {
         @ApiResponse(responseCode = "422", description = "Input validation(s) failed"),
         @ApiResponse(responseCode = "409", description = "Field value(s) already exists")
     })
-    public Enrollment create(@Valid @RequestBody Enrollment enrollment) {
-        return enrollmentService.create(enrollment);
+    public Department create(@Valid @RequestBody Department course) {
+        return departmentService.create(course);
     }
 
     @GetMapping
-    public Page<Enrollment> getMany(Pageable pageable) {
-        return enrollmentService.getMany(pageable);
+    public Page<Department> getMany(Pageable pageable) {
+        return departmentService.getMany(pageable);
     }
 
     @PutMapping(value = "/{id}")
@@ -50,13 +44,13 @@ public class EnrollmentController {
         @ApiResponse(responseCode = "409", description = "Field value(s) already exists")
     })
 //    @PreAuthorize("hasRole('ROLE_ADMIN')")
-    public void updateByID(@PathVariable Long id, @Valid @RequestBody Enrollment enrollment) {
-        enrollmentService.updateByID(id, enrollment);
+    public void updateByID(@PathVariable Long id, @Valid @RequestBody Department course) {
+        departmentService.updateByID(id, course);
     }
 
     //    @PreAuthorize("hasRole('ROLE_ADMIN')")
     @DeleteMapping(value = "/{id}")
     public void deleteByID(@PathVariable Long id) {
-        enrollmentService.deleteByID(id);
+        departmentService.deleteByID(id);
     }
 }

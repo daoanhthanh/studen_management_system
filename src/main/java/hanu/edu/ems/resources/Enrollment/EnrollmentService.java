@@ -1,4 +1,7 @@
 package hanu.edu.ems.resources.Enrollment;
 
-public class EnrollmentService {
+import hanu.edu.ems.base.CRUDService;
+import hanu.edu.ems.resources.Enrollment.entity.Enrollment;
+
+public interface EnrollmentService extends CRUDService<Enrollment, Long> {
 }

@@ -1,4 +1,4 @@
-package hanu.edu.ems.resources.TimeTable.entities.TimeTableCell;
+package hanu.edu.ems.resources.TimeTable.entity.TimeTableCell;
 
 import javax.persistence.Entity;
 import javax.persistence.Id;

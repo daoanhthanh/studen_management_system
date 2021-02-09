@@ -1,4 +1,7 @@
 package hanu.edu.ems.resources.Teacher;
 
-public class TeacherRepository {
+import hanu.edu.ems.resources.Teacher.entity.Teacher;
+import org.springframework.data.jpa.repository.JpaRepository;
+
+public interface TeacherRepository extends JpaRepository<Teacher, Long> {
 }
