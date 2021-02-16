@@ -3,6 +3,7 @@ package hanu.edu.ems.auth;
 import io.jsonwebtoken.Claims;
 import io.jsonwebtoken.Jwts;
 import io.jsonwebtoken.SignatureAlgorithm;
+import lombok.extern.slf4j.Slf4j;
 import org.springframework.security.core.userdetails.UserDetails;
 import org.springframework.stereotype.Service;
 
@@ -12,9 +13,10 @@ import java.util.Map;
 import java.util.function.Function;
 
 @Service
+@Slf4j
 public class JwtUtil {
 
-    private String SECRET_KEY = "sqa@2021frontend+sqa@2021backend";
+    private final String SECRET_KEY = "sqa@2021frontend+sqa@2021backend";
 
     public String extractUsername(String token) {
         return extractClaim(token, Claims::getSubject);

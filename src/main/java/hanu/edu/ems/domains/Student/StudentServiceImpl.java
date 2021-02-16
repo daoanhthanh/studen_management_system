@@ -1,6 +1,7 @@
 package hanu.edu.ems.domains.Student;
 
 import hanu.edu.ems.domains.Student.entity.Student;
+import hanu.edu.ems.domains.User.UserRepository;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.Page;
 
@@ -15,7 +16,7 @@ public class StudentServiceImpl implements StudentService {
     private final StudentRepository studentRepository;
 
     @Autowired
-    public StudentServiceImpl(StudentRepository studentRepository) {
+    public StudentServiceImpl(StudentRepository studentRepository, UserRepository userRepository) {
         this.studentRepository = studentRepository;
     }
 
