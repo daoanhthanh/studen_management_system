@@ -3,10 +3,14 @@ package hanu.edu.ems.domains.TimeTable.entity;
 import hanu.edu.ems.base.TimeStamps;
 import hanu.edu.ems.domains.TimeTable.entity.TimeTableCell.TimetableCell;
 import lombok.AllArgsConstructor;
+import lombok.Builder;
 import lombok.Data;
 import lombok.EqualsAndHashCode;
 import lombok.NoArgsConstructor;
+import lombok.Singular;
 import lombok.ToString;
+import org.hibernate.annotations.LazyCollection;
+import org.hibernate.annotations.LazyCollectionOption;
 
 import javax.persistence.CascadeType;
 import javax.persistence.Entity;
@@ -24,13 +28,16 @@ import java.util.List;
 @Data
 @NoArgsConstructor
 @AllArgsConstructor
+@Builder
 public class Timetable implements TimeStamps {
 
     @Id
     @GeneratedValue(strategy = GenerationType.AUTO)
     private Long id;
 
-    @OneToMany(mappedBy = "timetable", cascade = CascadeType.ALL)
+    @LazyCollection(LazyCollectionOption.FALSE)
+    @Singular
+    @OneToMany(mappedBy = "timetable", cascade = CascadeType.PERSIST)
     @EqualsAndHashCode.Exclude
     @ToString.Exclude
     private List<TimetableCell> timetableCells;

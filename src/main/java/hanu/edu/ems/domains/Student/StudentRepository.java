@@ -8,22 +8,33 @@ import org.springframework.data.jpa.repository.Query;
 import org.springframework.stereotype.Repository;
 import org.springframework.transaction.annotation.Transactional;
 
+import javax.validation.constraints.Email;
+import javax.validation.constraints.Size;
+
+import static hanu.edu.ems.domains.User.entity.User.MAX_LENGTH_FIRST_NAME;
+import static hanu.edu.ems.domains.User.entity.User.MAX_LENGTH_LAST_NAME;
+import static hanu.edu.ems.domains.User.entity.User.MAX_LENGTH_PHONE_NUMBER;
+import static hanu.edu.ems.domains.User.entity.User.MIN_LENGTH_FIRST_NAME;
+import static hanu.edu.ems.domains.User.entity.User.MIN_LENGTH_LAST_NAME;
+import static hanu.edu.ems.domains.User.entity.User.MIN_LENGTH_PHONE_NUMBER;
+
 
 @Repository
 @Transactional(readOnly = true)
 public interface StudentRepository extends JpaRepository<Student, Long> {
 
-    @Query("SELECT s FROM Student s WHERE s.firstName LIKE ?1")
-    Page<Student> findByPartialStudentFirstName(String firstName, Pageable pageable);
+    Page<Student> findByDepartmentId(Long departmentId, Pageable pageable);
 
-    @Query("SELECT s FROM Student s WHERE s.lastName LIKE ?1")
-    Page<Student> findByPartialStudentLastName(String lastName, Pageable pageable);
+    @Query("SELECT s FROM Student s " +
+        "JOIN s.enrollments e " +
+        "WHERE e.courseRelease.id = ?1")
+    Page<Student> findByCourseReleaseId(Long courseReleaseId, Pageable pageable);
 
-    @Query("SELECT s FROM Student s WHERE s.email = ?1")
-    Student findByStudentEmail(String email);
-
-    @Query("SELECT s FROM Student s WHERE s.phoneNumber = ?1")
-    Student findByStudentPhoneNumber(String phoneNumber);
+    @Query("SELECT s FROM Student s " +
+        "JOIN s.enrollments e " +
+        "JOIN e.courseRelease cr " +
+        "WHERE cr.course.id = ?1")
+    Page<Student> findByCourseId(Long courseId, Pageable pageable);
 
     @Query("SELECT s FROM Student s " +
             "WHERE s.firstName LIKE ?1 " +

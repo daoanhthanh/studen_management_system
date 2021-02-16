@@ -26,6 +26,8 @@ import org.springframework.web.bind.annotation.RestController;
 
 import javax.validation.Valid;
 
+import javax.validation.Valid;
+
 @RestController
 @RequestMapping("/auth")
 @Tag(name = "Authentication Manager", description = "The Authentication API")

@@ -51,6 +51,21 @@ public class StudentServiceImpl implements StudentService {
     }
 
     @Override
+    public Page<Student> findByDepartmentId(Long departmentId, Pageable pageable) {
+        return studentRepository.findByDepartmentId(departmentId, pageable);
+    }
+
+    @Override
+    public Page<Student> findByCourseReleaseId(Long courseReleaseId, Pageable pageable) {
+        return studentRepository.findByCourseReleaseId(courseReleaseId, pageable);
+    }
+
+    @Override
+    public Page<Student> findByCourseId(Long courseId, Pageable pageable) {
+        return studentRepository.findByCourseId(courseId, pageable);
+    }
+
+    @Override
     public Page<Student> findByKeyWord(String keyword, Pageable pageable) {
         return studentRepository.findByKeyword(keyword, pageable);
     }

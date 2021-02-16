@@ -18,6 +18,6 @@ public class CreateCourseReleaseDTOConverter implements Converter<CreateCourseRe
 
     @Override
     public CourseRelease convert(CreateCourseReleaseDTO createCourseReleaseDTO) {
-        return CourseRelease.builder().build();
+        return modelMapper.map(createCourseReleaseDTO, CourseRelease.class);
     }
 }
