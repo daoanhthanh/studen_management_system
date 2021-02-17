@@ -24,6 +24,8 @@ public class UpdateCourseReleaseDTO {
 
     private Long teacherID;
 
+    private Long teacherID;
+
     private Long courseID;
 
     private Season season;

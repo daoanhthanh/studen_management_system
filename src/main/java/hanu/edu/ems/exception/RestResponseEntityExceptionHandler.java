@@ -17,6 +17,7 @@ import org.springframework.web.method.annotation.MethodArgumentTypeMismatchExcep
 import org.springframework.web.servlet.mvc.method.annotation.ResponseEntityExceptionHandler;
 
 import javax.annotation.Nonnull;
+import javax.persistence.EntityNotFoundException;
 import javax.validation.ConstraintViolation;
 import javax.validation.ConstraintViolationException;
 import java.util.ArrayList;
@@ -35,9 +36,9 @@ public class RestResponseEntityExceptionHandler extends ResponseEntityExceptionH
             @Nonnull WebRequest request
     ) {
         String error = ex.getParameterName() + " parameter is missing";
-
+        String message = removePackageLocation(ex.getLocalizedMessage());
         BaseException baseException =
-                new BaseException(HttpStatus.BAD_REQUEST, ex.getLocalizedMessage(), Collections.singletonList(error));
+                new BaseException(HttpStatus.BAD_REQUEST, message, Collections.singletonList(error));
         return new ResponseEntity<>(
                 baseException, new HttpHeaders(), baseException.getStatus());
     }
@@ -56,37 +57,34 @@ public class RestResponseEntityExceptionHandler extends ResponseEntityExceptionH
         for (ObjectError error : ex.getBindingResult().getGlobalErrors()) {
             errors.add(error.getObjectName() + ": " + error.getDefaultMessage());
         }
-
-        BaseException baseException =
-                new BaseException(HttpStatus.BAD_REQUEST, ex.getLocalizedMessage(), errors);
-        return handleExceptionInternal(
-                ex, baseException, headers, baseException.getStatus(), request);
+        String message = removePackageLocation(ex.getLocalizedMessage());
+        BaseException baseException = new BaseException(HttpStatus.BAD_REQUEST, message, errors);
+        return handleExceptionInternal(ex, baseException, headers, baseException.getStatus(), request);
     }
 
-
     @ExceptionHandler(DataIntegrityViolationException.class)
-    public ResponseEntity<Object> duplicateEmailException(DataIntegrityViolationException e) {
-        BaseException baseException = new BaseException(HttpStatus.CONFLICT, e.getLocalizedMessage(), Collections.singletonList("Data Integrity Violation"));
+    public ResponseEntity<Object> handleDataIntegrityViolation(DataIntegrityViolationException e) {
+        String message = removePackageLocation(e.getLocalizedMessage());
+        BaseException baseException = new BaseException(HttpStatus.CONFLICT, message, Collections.singletonList("Data Integrity Violation"));
         return new ResponseEntity<>(baseException, new HttpHeaders(), baseException.getStatus());
     }
 
     @ExceptionHandler(BadCredentialsException.class)
     public ResponseEntity<Object> badCredentialsException(BadCredentialsException e) {
-        BaseException baseException = new BaseException(HttpStatus.BAD_REQUEST, e.getLocalizedMessage(), Collections.singletonList("Incorrect Username or password"));
+        String message = removePackageLocation(e.getLocalizedMessage());
+        BaseException baseException = new BaseException(HttpStatus.BAD_REQUEST, message, Collections.singletonList("Incorrect Username or password"));
         return new ResponseEntity<>(baseException, new HttpHeaders(), baseException.getStatus());
     }
 
     @ExceptionHandler({ConstraintViolationException.class})
-    public ResponseEntity<Object> handleConstraintViolation(
-            ConstraintViolationException ex) {
+    public ResponseEntity<Object> handleConstraintViolation(ConstraintViolationException ex) {
         List<String> errors = new ArrayList<>();
         for (ConstraintViolation<?> violation : ex.getConstraintViolations()) {
             errors.add(violation.getRootBeanClass().getName() + " " +
                     violation.getPropertyPath() + ": " + violation.getMessage());
         }
-
         BaseException baseException =
-                new BaseException(HttpStatus.BAD_REQUEST, ex.getLocalizedMessage(), errors);
+                new BaseException(HttpStatus.BAD_REQUEST, "Domain constraints' validations failed", errors);
         return new ResponseEntity<>(
                 baseException, new HttpHeaders(), baseException.getStatus());
     }
@@ -94,11 +92,11 @@ public class RestResponseEntityExceptionHandler extends ResponseEntityExceptionH
     @ExceptionHandler({MethodArgumentTypeMismatchException.class})
     public ResponseEntity<Object> handleMethodArgumentTypeMismatch(
             MethodArgumentTypeMismatchException ex) {
-        String error =
-                ex.getName() + " should be of type " + Objects.requireNonNull(ex.getRequiredType()).getName();
+        String error = ex.getName() + " should be of type " + Objects.requireNonNull(ex.getRequiredType()).getName();
 
+        String message = removePackageLocation(ex.getLocalizedMessage());
         BaseException baseException =
-                new BaseException(HttpStatus.BAD_REQUEST, ex.getLocalizedMessage(), Collections.singletonList(error));
+                new BaseException(HttpStatus.BAD_REQUEST, message, Collections.singletonList(error));
         return new ResponseEntity<>(
                 baseException, new HttpHeaders(), baseException.getStatus());
     }
@@ -117,17 +115,26 @@ public class RestResponseEntityExceptionHandler extends ResponseEntityExceptionH
                 " method is not supported for this request. Supported methods are ");
         Objects.requireNonNull(ex.getSupportedHttpMethods()).forEach(t -> builder.append(t).append(" "));
 
-        BaseException baseException = new BaseException(HttpStatus.METHOD_NOT_ALLOWED,
-                ex.getLocalizedMessage(), Collections.singletonList(builder.toString()));
+        String message = removePackageLocation(ex.getLocalizedMessage());
+        BaseException baseException = new BaseException(HttpStatus.METHOD_NOT_ALLOWED, message, Collections.singletonList(builder.toString()));
         return new ResponseEntity<>(
                 baseException, new HttpHeaders(), baseException.getStatus());
     }
 
+    @ExceptionHandler({EntityNotFoundException.class})
+    public ResponseEntity<Object> handleEntityNotFound(EntityNotFoundException ex) {
+        String message = removePackageLocation(ex.getLocalizedMessage());
+        BaseException baseException = new BaseException(HttpStatus.NOT_FOUND, message, null);
+        return new ResponseEntity<>(baseException, new HttpHeaders(), baseException.getStatus());
+    }
+
+    private String removePackageLocation(String message) {
+        return message.replaceAll("hanu\\.edu\\.ems\\.?", "");
+    }
+
 //    @ExceptionHandler({Exception.class})
 //    public ResponseEntity<Object> handleAll(Exception ex) {
-//        BaseException baseException = new BaseException(
-//                HttpStatus.INTERNAL_SERVER_ERROR, ex.getLocalizedMessage(), Collections.singletonList("error occurred"));
-//        return new ResponseEntity<>(
-//                baseException, new HttpHeaders(), baseException.getStatus());
+//        BaseException baseException = new BaseException(HttpStatus.INTERNAL_SERVER_ERROR, ex.getLocalizedMessage(), Collections.singletonList("Unknown error occurred"));
+//        return new ResponseEntity<>(baseException, new HttpHeaders(), baseException.getStatus());
 //    }
 }
