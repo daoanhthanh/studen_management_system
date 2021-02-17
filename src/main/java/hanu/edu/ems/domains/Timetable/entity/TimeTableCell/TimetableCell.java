@@ -1,7 +1,7 @@
-package hanu.edu.ems.domains.TimeTable.entity.TimeTableCell;
+package hanu.edu.ems.domains.Timetable.entity.TimeTableCell;
 
 import com.fasterxml.jackson.annotation.JsonIgnore;
-import hanu.edu.ems.domains.TimeTable.entity.Timetable;
+import hanu.edu.ems.domains.Timetable.entity.Timetable;
 import lombok.AllArgsConstructor;
 import lombok.Builder;
 import lombok.Data;
@@ -18,7 +18,6 @@ import javax.persistence.ManyToOne;
 import javax.persistence.Table;
 import javax.validation.constraints.Max;
 import javax.validation.constraints.Min;
-import javax.validation.constraints.NotNull;
 
 @Entity
 @Table(name = "timetable_cells")
