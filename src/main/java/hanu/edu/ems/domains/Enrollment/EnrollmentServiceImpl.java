@@ -24,9 +24,9 @@ public class EnrollmentServiceImpl implements EnrollmentService {
     }
 
     @Override
-    public void updateById(Long id, Enrollment enrollment) {
+    public Enrollment updateById(Long id, Enrollment enrollment) {
         enrollment.setId(id);
-        enrollmentRepository.save(enrollment);
+        return enrollmentRepository.save(enrollment);
     }
 
     @Override

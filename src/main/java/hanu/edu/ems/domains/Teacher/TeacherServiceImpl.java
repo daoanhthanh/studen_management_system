@@ -24,9 +24,9 @@ public class TeacherServiceImpl implements TeacherService {
     }
 
     @Override
-    public void updateById(Long id, Teacher teacher) {
+    public Teacher updateById(Long id, Teacher teacher) {
         teacher.setId(id);
-        teacherRepository.save(teacher);
+        return teacherRepository.save(teacher);
     }
 
     @Override

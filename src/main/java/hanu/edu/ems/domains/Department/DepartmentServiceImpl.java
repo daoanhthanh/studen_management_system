@@ -24,9 +24,9 @@ public class DepartmentServiceImpl implements DepartmentService {
     }
 
     @Override
-    public void updateById(Long id, Department department) {
+    public Department updateById(Long id, Department department) {
         department.setId(id);
-        departmentRepository.save(department);
+        return departmentRepository.save(department);
     }
 
     @Override

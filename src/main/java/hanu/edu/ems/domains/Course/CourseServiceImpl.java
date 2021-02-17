@@ -24,9 +24,9 @@ public class CourseServiceImpl implements CourseService {
     }
 
     @Override
-    public void updateById(Long id, Course course) {
+    public Course updateById(Long id, Course course) {
         course.setId(id);
-        courseRepository.save(course);
+        return courseRepository.save(course);
     }
 
     @Override
