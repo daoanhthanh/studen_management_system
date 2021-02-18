@@ -1,13 +1,15 @@
 package hanu.edu.ems.domains.Student;
 
 import hanu.edu.ems.base.CRUDService;
+import hanu.edu.ems.domains.Student.dto.CreateStudentDTO;
+import hanu.edu.ems.domains.Student.dto.UpdateStudentDTO;
 import hanu.edu.ems.domains.Student.entity.Student;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
 import org.springframework.data.jpa.repository.Query;
 
 
-public interface StudentService extends CRUDService<Student, Long> {
+public interface StudentService extends CRUDService<Student, Long, CreateStudentDTO, UpdateStudentDTO> {
 
     Page<Student> findByDepartmentId(Long departmentId, Pageable pageable);
 
