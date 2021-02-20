@@ -1,4 +1,4 @@
-package hanu.edu.ems.auth;
+package hanu.edu.ems.config.auth;
 
 import hanu.edu.ems.domains.User.UserService;
 import org.springframework.beans.factory.annotation.Autowired;

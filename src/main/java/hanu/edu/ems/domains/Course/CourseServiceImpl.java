@@ -61,7 +61,7 @@ public class CourseServiceImpl implements CourseService {
 
     @Override
     public Course getById(Long id) {
-        return courseRepository.getOne(id);
+        return courseRepository.findById(id).orElseThrow(EntityNotFoundException::new);
     }
 
     @Override

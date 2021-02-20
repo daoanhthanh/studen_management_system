@@ -1,4 +1,4 @@
-package hanu.edu.ems.exception;
+package hanu.edu.ems.config.exception;
 
 import lombok.AllArgsConstructor;
 import lombok.Data;

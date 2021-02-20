@@ -76,7 +76,7 @@ public class EnrollmentServiceImpl implements EnrollmentService {
 
     @Override
     public Enrollment getById(Long id) {
-        return enrollmentRepository.getOne(id);
+        return enrollmentRepository.findById(id).orElseThrow(EntityNotFoundException::new);
     }
 
     @Override

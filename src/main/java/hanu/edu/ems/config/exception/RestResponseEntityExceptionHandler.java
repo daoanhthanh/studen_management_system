@@ -1,4 +1,4 @@
-package hanu.edu.ems.exception;
+package hanu.edu.ems.config.exception;
 
 import org.springframework.dao.DataIntegrityViolationException;
 import org.springframework.http.HttpHeaders;
@@ -12,6 +12,8 @@ import org.springframework.web.bind.MethodArgumentNotValidException;
 import org.springframework.web.bind.MissingServletRequestParameterException;
 import org.springframework.web.bind.annotation.ControllerAdvice;
 import org.springframework.web.bind.annotation.ExceptionHandler;
+import org.springframework.web.bind.annotation.ResponseBody;
+import org.springframework.web.bind.annotation.ResponseStatus;
 import org.springframework.web.context.request.WebRequest;
 import org.springframework.web.method.annotation.MethodArgumentTypeMismatchException;
 import org.springframework.web.servlet.mvc.method.annotation.ResponseEntityExceptionHandler;
@@ -29,6 +31,7 @@ import java.util.Objects;
 public class RestResponseEntityExceptionHandler extends ResponseEntityExceptionHandler {
 
     @Nonnull
+    @ResponseStatus(HttpStatus.BAD_REQUEST)
     protected ResponseEntity<Object> handleMissingServletRequestParameter(
             MissingServletRequestParameterException ex,
             @Nonnull HttpHeaders headers,
@@ -44,6 +47,7 @@ public class RestResponseEntityExceptionHandler extends ResponseEntityExceptionH
     }
 
     @Nonnull
+    @ResponseStatus(HttpStatus.BAD_REQUEST)
     protected ResponseEntity<Object> handleMethodArgumentNotValid(
             MethodArgumentNotValidException ex,
             @Nonnull HttpHeaders headers,
@@ -62,13 +66,15 @@ public class RestResponseEntityExceptionHandler extends ResponseEntityExceptionH
         return handleExceptionInternal(ex, baseException, headers, baseException.getStatus(), request);
     }
 
+    @ResponseStatus(HttpStatus.CONFLICT)
     @ExceptionHandler(DataIntegrityViolationException.class)
-    public ResponseEntity<Object> handleDataIntegrityViolation(DataIntegrityViolationException e) {
+    public ResponseEntity<BaseException> handleDataIntegrityViolation(DataIntegrityViolationException e) {
         String message = removePackageLocation(e.getLocalizedMessage());
         BaseException baseException = new BaseException(HttpStatus.CONFLICT, message, Collections.singletonList("Data Integrity Violation"));
         return new ResponseEntity<>(baseException, new HttpHeaders(), baseException.getStatus());
     }
 
+    @ResponseStatus(HttpStatus.BAD_REQUEST)
     @ExceptionHandler(BadCredentialsException.class)
     public ResponseEntity<Object> badCredentialsException(BadCredentialsException e) {
         String message = removePackageLocation(e.getLocalizedMessage());
@@ -76,8 +82,9 @@ public class RestResponseEntityExceptionHandler extends ResponseEntityExceptionH
         return new ResponseEntity<>(baseException, new HttpHeaders(), baseException.getStatus());
     }
 
+    @ResponseStatus(HttpStatus.BAD_REQUEST)
     @ExceptionHandler({ConstraintViolationException.class})
-    public ResponseEntity<Object> handleConstraintViolation(ConstraintViolationException ex) {
+    public ResponseEntity<BaseException> handleConstraintViolation(ConstraintViolationException ex) {
         List<String> errors = new ArrayList<>();
         for (ConstraintViolation<?> violation : ex.getConstraintViolations()) {
             errors.add(violation.getRootBeanClass().getName() + " " +
@@ -89,8 +96,10 @@ public class RestResponseEntityExceptionHandler extends ResponseEntityExceptionH
                 baseException, new HttpHeaders(), baseException.getStatus());
     }
 
+    @ResponseBody
+    @ResponseStatus(HttpStatus.BAD_REQUEST)
     @ExceptionHandler({MethodArgumentTypeMismatchException.class})
-    public ResponseEntity<Object> handleMethodArgumentTypeMismatch(
+    public ResponseEntity<BaseException> handleMethodArgumentTypeMismatch(
             MethodArgumentTypeMismatchException ex) {
         String error = ex.getName() + " should be of type " + Objects.requireNonNull(ex.getRequiredType()).getName();
 
@@ -101,6 +110,8 @@ public class RestResponseEntityExceptionHandler extends ResponseEntityExceptionH
                 baseException, new HttpHeaders(), baseException.getStatus());
     }
 
+
+    @ResponseStatus(HttpStatus.METHOD_NOT_ALLOWED)
     @Override
     @Nonnull
     protected ResponseEntity<Object> handleHttpRequestMethodNotSupported(
@@ -121,8 +132,9 @@ public class RestResponseEntityExceptionHandler extends ResponseEntityExceptionH
                 baseException, new HttpHeaders(), baseException.getStatus());
     }
 
+    @ResponseStatus(HttpStatus.NOT_FOUND)
     @ExceptionHandler({EntityNotFoundException.class})
-    public ResponseEntity<Object> handleEntityNotFound(EntityNotFoundException ex) {
+    public ResponseEntity<BaseException> handleEntityNotFound(EntityNotFoundException ex) {
         String message = removePackageLocation(ex.getLocalizedMessage());
         BaseException baseException = new BaseException(HttpStatus.NOT_FOUND, message, null);
         return new ResponseEntity<>(baseException, new HttpHeaders(), baseException.getStatus());
@@ -132,9 +144,10 @@ public class RestResponseEntityExceptionHandler extends ResponseEntityExceptionH
         return message.replaceAll("hanu\\.edu\\.ems\\.?", "");
     }
 
-//    @ExceptionHandler({Exception.class})
-//    public ResponseEntity<Object> handleAll(Exception ex) {
-//        BaseException baseException = new BaseException(HttpStatus.INTERNAL_SERVER_ERROR, ex.getLocalizedMessage(), Collections.singletonList("Unknown error occurred"));
-//        return new ResponseEntity<>(baseException, new HttpHeaders(), baseException.getStatus());
-//    }
+    @ResponseStatus(HttpStatus.INTERNAL_SERVER_ERROR)
+    @ExceptionHandler({Exception.class})
+    public ResponseEntity<Object> handleAll(Exception ex) {
+        BaseException baseException = new BaseException(HttpStatus.INTERNAL_SERVER_ERROR, ex.getLocalizedMessage(), Collections.singletonList("Unknown error occurred"));
+        return new ResponseEntity<>(baseException, new HttpHeaders(), baseException.getStatus());
+    }
 }

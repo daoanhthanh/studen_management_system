@@ -1,9 +1,7 @@
 package hanu.edu.ems.domains.Teacher;
 
-import hanu.edu.ems.domains.CourseRelease.entity.CourseRelease;
 import hanu.edu.ems.domains.Department.DepartmentRepository;
 import hanu.edu.ems.domains.Department.entity.Department;
-import hanu.edu.ems.domains.Student.entity.Student;
 import hanu.edu.ems.domains.Teacher.dto.CreateTeacherDTO;
 import hanu.edu.ems.domains.Teacher.dto.UpdateTeacherDTO;
 import hanu.edu.ems.domains.Teacher.entity.Teacher;
@@ -45,6 +43,7 @@ public class TeacherServiceImpl implements TeacherService {
     @Override
     public Teacher updateById(Long id, UpdateTeacherDTO updateTeacherDTO) {
         Teacher teacher = teacherRepository.findById(id).orElseThrow(EntityNotFoundException::new);
+
         modelMapper.map(updateTeacherDTO, teacher);
 
         Department department = departmentRepository.findById(updateTeacherDTO.getDepartmentID()).orElseThrow(EntityNotFoundException::new);

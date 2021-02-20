@@ -1,4 +1,4 @@
-package hanu.edu.ems.auth;
+package hanu.edu.ems.config.auth;
 
 import io.jsonwebtoken.Claims;
 import io.jsonwebtoken.Jwts;

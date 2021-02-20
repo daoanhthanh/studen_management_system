@@ -16,7 +16,7 @@ import java.util.List;
 @Builder
 public class CreateTimetableDTO implements TimeStamps {
 
-    private List<TimetableCellDTO> timetableCellDTOs;
+    private List<TimetableCellDTO> cells;
 
     @JsonIgnore
     @Builder.Default

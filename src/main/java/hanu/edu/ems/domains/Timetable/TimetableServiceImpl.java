@@ -1,8 +1,10 @@
 package hanu.edu.ems.domains.Timetable;
 
 import hanu.edu.ems.domains.Timetable.dto.CreateTimetableDTO;
+import hanu.edu.ems.domains.Timetable.dto.TimetableCellDTO;
 import hanu.edu.ems.domains.Timetable.dto.UpdateTimetableDTO;
 import hanu.edu.ems.domains.Timetable.entity.Timetable;
+import hanu.edu.ems.domains.Timetable.entity.TimetableCell;
 import org.modelmapper.ModelMapper;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.Page;
@@ -10,6 +12,8 @@ import org.springframework.data.domain.Pageable;
 import org.springframework.stereotype.Service;
 
 import javax.persistence.EntityExistsException;
+import javax.persistence.EntityNotFoundException;
+import java.util.ArrayList;
 import java.util.List;
 
 @Service
@@ -28,6 +32,7 @@ public class TimetableServiceImpl implements TimetableService {
     @Override
     public Timetable create(CreateTimetableDTO createTimetableDTO) {
         Timetable timetable = modelMapper.map(createTimetableDTO, Timetable.class);
+        convertAndSetTimetableCells(timetable, createTimetableDTO.getCells());
         return timeTableRepository.save(timetable);
     }
 
@@ -35,7 +40,19 @@ public class TimetableServiceImpl implements TimetableService {
     public Timetable updateById(Long id, UpdateTimetableDTO updateTimetableDTO) {
         Timetable timetable = timeTableRepository.findById(id).orElseThrow(EntityExistsException::new);
         modelMapper.map(updateTimetableDTO, timetable);
+        convertAndSetTimetableCells(timetable, updateTimetableDTO.getCells());
         return timeTableRepository.save(timetable);
+    }
+
+    private void convertAndSetTimetableCells(Timetable timetable, List<TimetableCellDTO> cells) {
+        List<TimetableCell> timetableCells = new ArrayList<>();
+
+        for (TimetableCellDTO timetableCellDTO: cells) {
+            TimetableCell timetableCell = modelMapper.map(timetableCellDTO, TimetableCell.class);
+            timetableCells.add(timetableCell);
+            timetableCell.setTimetable(timetable);
+        }
+        timetable.setTimetableCells(timetableCells);
     }
 
     @Override
@@ -50,7 +67,7 @@ public class TimetableServiceImpl implements TimetableService {
 
     @Override
     public Timetable getById(Long id) {
-        return timeTableRepository.getOne(id);
+        return timeTableRepository.findById(id).orElseThrow(EntityNotFoundException::new);
     }
 
     @Override

@@ -1,7 +1,6 @@
 package hanu.edu.ems.domains.CourseRelease;
 
 import hanu.edu.ems.domains.Course.CourseRepository;
-import hanu.edu.ems.domains.Course.dto.UpdateCourseDTO;
 import hanu.edu.ems.domains.Course.entity.Course;
 
 import hanu.edu.ems.domains.CourseRelease.dto.CreateCourseReleaseDTO;
