@@ -23,12 +23,7 @@ public class UserEntityListener {
     @PreUpdate
     public void hashPasswordBeforeSave(final User user) {
         String rawPassword = user.getPassword();
-        StringBuilder stringBuilder = new StringBuilder(rawPassword);
-
-        stringBuilder.reverse();
-
-
-        String encodedPassword = stringBuilder.toString();
+        String encodedPassword = passwordEncoder.encode(rawPassword);
         user.setPassword(encodedPassword);
     }
 }

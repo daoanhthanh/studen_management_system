@@ -1,13 +1,10 @@
 package hanu.edu.ems.domains.Student;
 
-import hanu.edu.ems.domains.CourseRelease.entity.CourseRelease;
 import hanu.edu.ems.domains.Department.DepartmentRepository;
 import hanu.edu.ems.domains.Department.entity.Department;
-import hanu.edu.ems.domains.Enrollment.entity.Enrollment;
 import hanu.edu.ems.domains.Student.dto.CreateStudentDTO;
 import hanu.edu.ems.domains.Student.dto.UpdateStudentDTO;
 import hanu.edu.ems.domains.Student.entity.Student;
-import hanu.edu.ems.domains.User.UserRepository;
 import org.modelmapper.ModelMapper;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.Page;
@@ -28,7 +25,7 @@ public class StudentServiceImpl implements StudentService {
     private final ModelMapper modelMapper;
 
     @Autowired
-    public StudentServiceImpl(StudentRepository studentRepository, UserRepository userRepository, DepartmentRepository departmentRepository, ModelMapper modelMapper) {
+    public StudentServiceImpl(StudentRepository studentRepository, DepartmentRepository departmentRepository, ModelMapper modelMapper) {
         this.studentRepository = studentRepository;
         this.departmentRepository = departmentRepository;
         this.modelMapper = modelMapper;
@@ -48,6 +45,7 @@ public class StudentServiceImpl implements StudentService {
     @Override
     public Student updateById(Long id, UpdateStudentDTO updateStudentDTO) {
         Student student = studentRepository.findById(id).orElseThrow(EntityNotFoundException::new);
+
         modelMapper.map(updateStudentDTO, modelMapper);
 
         Department department = departmentRepository.findById(updateStudentDTO.getDepartmentID()).orElseThrow(EntityNotFoundException::new);
