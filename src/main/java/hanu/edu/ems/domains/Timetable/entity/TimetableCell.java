@@ -35,7 +35,7 @@ public class TimetableCell {
     public static final int MAX_SESSION_LENGTH = 8;
 
     @Id
-    @GeneratedValue(strategy = GenerationType.IDENTITY)
+    @GeneratedValue(strategy = GenerationType.AUTO)
     private Integer id;
 
     @NotNull

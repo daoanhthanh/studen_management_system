@@ -1,7 +1,6 @@
 package hanu.edu.ems.domains.Timetable.entity;
 
 import hanu.edu.ems.base.TimeStamps;
-import hanu.edu.ems.domains.Timetable.entity.TimeTableCell.TimetableCell;
 import lombok.AllArgsConstructor;
 import lombok.Builder;
 import lombok.Data;

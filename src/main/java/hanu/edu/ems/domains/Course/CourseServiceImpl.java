@@ -21,20 +21,22 @@ public class CourseServiceImpl implements CourseService {
 
     private final DepartmentRepository departmentRepository;
 
-    private final ModelMapper modelMapper;
+    @Autowired
+    private ModelMapper modelMapper;
 
     @Autowired
-    public CourseServiceImpl(CourseRepository courseRepository, DepartmentRepository departmentRepository, ModelMapper modelMapper) {
+    public CourseServiceImpl(CourseRepository courseRepository, DepartmentRepository departmentRepository) {
         this.courseRepository = courseRepository;
         this.departmentRepository = departmentRepository;
-        this.modelMapper = modelMapper;
     }
 
     @Override
     public Course create(CreateCourseDTO createCourseDTO) {
-        Department department = departmentRepository.findById(createCourseDTO.getDepartmentID()).orElseThrow(EntityNotFoundException::new);
         Course course = modelMapper.map(createCourseDTO, Course.class);
+
+        Department department = departmentRepository.findById(createCourseDTO.getDepartmentID()).orElseThrow(EntityNotFoundException::new);
         course.setDepartment(department);
+
         return courseRepository.save(course);
     }
 
@@ -42,6 +44,8 @@ public class CourseServiceImpl implements CourseService {
     public Course updateById(Long id, UpdateCourseDTO updateCourseDTO) {
         Course course = courseRepository.findById(id).orElseThrow(EntityNotFoundException::new);
         modelMapper.map(updateCourseDTO, course);
+        Department department = departmentRepository.findById(updateCourseDTO.getDepartmentID()).orElseThrow(EntityNotFoundException::new);
+        course.setDepartment(department);
         return courseRepository.save(course);
     }
 

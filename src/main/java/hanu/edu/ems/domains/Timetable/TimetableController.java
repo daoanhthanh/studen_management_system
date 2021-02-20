@@ -30,13 +30,10 @@ import java.util.List;
 @Tag(name = "Timetable Manager", description = "The Timetable API")
 public class TimetableController implements CRUDController<Timetable, Long, CreateTimetableDTO, UpdateTimetableDTO> {
 
-    private final GenericConversionService genericConversionService;
-
     private final TimetableService timetableService;
 
     @Autowired
-    public TimetableController(GenericConversionService genericConversionService, TimetableService timetableService) {
-        this.genericConversionService = genericConversionService;
+    public TimetableController(TimetableService timetableService) {
         this.timetableService = timetableService;
     }
 
@@ -50,8 +47,7 @@ public class TimetableController implements CRUDController<Timetable, Long, Crea
         @ApiResponse(responseCode = "409", description = "Field value(s) already exists")
     })
     public Timetable create(@Valid @RequestBody CreateTimetableDTO createTimeTableDTO) {
-        Timetable newTimetable = genericConversionService.convert(createTimeTableDTO, Timetable.class);
-        return timetableService.create(newTimetable);
+        return timetableService.create(createTimeTableDTO);
     }
 
     @Override
@@ -88,8 +84,7 @@ public class TimetableController implements CRUDController<Timetable, Long, Crea
     })
     @PreAuthorize("hasAuthority('ADMIN')")
     public Timetable updateByID(@PathVariable Long id, @Valid @RequestBody UpdateTimetableDTO updateTimetableDTO) {
-        Timetable updatedExistingTimetable = genericConversionService.convert(updateTimetableDTO, Timetable.class);
-        return timetableService.updateById(id, updatedExistingTimetable);
+        return timetableService.updateById(id, updateTimetableDTO);
     }
 
     @Override
