@@ -31,7 +31,7 @@ import java.util.List;
 public class Timetable implements TimeStamps {
 
     @Id
-    @GeneratedValue(strategy = GenerationType.AUTO)
+    @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
 
     @LazyCollection(LazyCollectionOption.FALSE)

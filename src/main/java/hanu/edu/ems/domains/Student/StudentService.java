@@ -6,7 +6,8 @@ import hanu.edu.ems.domains.Student.dto.UpdateStudentDTO;
 import hanu.edu.ems.domains.Student.entity.Student;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
-import org.springframework.data.jpa.repository.Query;
+
+import java.util.List;
 
 
 public interface StudentService extends CRUDService<Student, Long, CreateStudentDTO, UpdateStudentDTO> {
@@ -20,4 +21,6 @@ public interface StudentService extends CRUDService<Student, Long, CreateStudent
     Page<Student> findByKeyWord(String keyword, Pageable pageRequest);
 
     Page<Student> getMany(Pageable pageRequest);
+
+    List<Student> createManyStudents(List<CreateStudentDTO> createStudentDTOList);
 }

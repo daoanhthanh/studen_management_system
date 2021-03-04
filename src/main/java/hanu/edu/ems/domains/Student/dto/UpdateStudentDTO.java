@@ -3,7 +3,6 @@ package hanu.edu.ems.domains.Student.dto;
 import hanu.edu.ems.domains.Student.entity.Student;
 import hanu.edu.ems.domains.User.dto.UpdateUserDTO;
 import lombok.AllArgsConstructor;
-import lombok.Builder;
 import lombok.Data;
 import lombok.EqualsAndHashCode;
 import lombok.NoArgsConstructor;

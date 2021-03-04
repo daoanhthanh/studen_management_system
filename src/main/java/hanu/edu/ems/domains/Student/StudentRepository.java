@@ -37,9 +37,10 @@ public interface StudentRepository extends JpaRepository<Student, Long> {
     Page<Student> findByCourseId(Long courseId, Pageable pageable);
 
     @Query("SELECT s FROM Student s " +
-            "WHERE s.firstName LIKE ?1 " +
-            "OR s.phoneNumber LIKE ?1 " +
-            "OR s.email LIKE ?1 " +
-            "OR s.lastName LIKE ?1")
+            "JOIN User u ON s.id = u.id " +
+            "WHERE u.firstName LIKE %?1% " +
+            "OR u.phoneNumber LIKE %?1% " +
+            "OR u.email LIKE %?1% " +
+            "OR u.lastName LIKE %?1%")
     Page<Student> findByKeyword(String keyword, Pageable pageable);
 }

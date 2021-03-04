@@ -1,5 +1,8 @@
 package hanu.edu.ems.domains.Student;
 
+import hanu.edu.ems.domains.Authority.AuthorityRepository;
+import hanu.edu.ems.domains.Authority.entity.Authority;
+import hanu.edu.ems.domains.Authority.entity.AuthorityName;
 import hanu.edu.ems.domains.Department.DepartmentRepository;
 import hanu.edu.ems.domains.Department.entity.Department;
 import hanu.edu.ems.domains.Student.dto.CreateStudentDTO;
@@ -13,6 +16,8 @@ import org.springframework.data.domain.Pageable;
 import org.springframework.stereotype.Service;
 
 import javax.persistence.EntityNotFoundException;
+import java.util.ArrayList;
+import java.util.Collections;
 import java.util.List;
 
 @Service
@@ -22,24 +27,34 @@ public class StudentServiceImpl implements StudentService {
 
     private final DepartmentRepository departmentRepository;
 
+    private final AuthorityRepository authorityRepository;
+
     private final ModelMapper modelMapper;
 
     @Autowired
-    public StudentServiceImpl(StudentRepository studentRepository, DepartmentRepository departmentRepository, ModelMapper modelMapper) {
+    public StudentServiceImpl(StudentRepository studentRepository, DepartmentRepository departmentRepository, AuthorityRepository authorityRepository, ModelMapper modelMapper) {
         this.studentRepository = studentRepository;
         this.departmentRepository = departmentRepository;
+        this.authorityRepository = authorityRepository;
         this.modelMapper = modelMapper;
     }
 
     @Override
     public Student create(CreateStudentDTO createStudentDTO) {
+        Student student = convertToStudent(createStudentDTO);
+        return studentRepository.save(student);
+    }
 
+    private Student convertToStudent(CreateStudentDTO createStudentDTO) {
         Student student = modelMapper.map(createStudentDTO, Student.class);
+
+        Authority authority = authorityRepository.findByName(AuthorityName.STUDENT);
+        student.setAuthorities(Collections.singletonList(authority));
 
         Department department = departmentRepository.findById(createStudentDTO.getDepartmentID()).orElseThrow(EntityNotFoundException::new);
         student.setDepartment(department);
 
-        return studentRepository.save(student);
+        return student;
     }
 
     @Override
@@ -92,5 +107,15 @@ public class StudentServiceImpl implements StudentService {
     @Override
     public Page<Student> findByKeyWord(String keyword, Pageable pageable) {
         return studentRepository.findByKeyword(keyword, pageable);
+    }
+
+    public List<Student> createManyStudents(List<CreateStudentDTO> createStudentDTOList) {
+        List<Student> students = new ArrayList<>();
+
+        for (CreateStudentDTO createStudentDTO: createStudentDTOList) {
+            Student student = convertToStudent(createStudentDTO);
+            students.add(student);
+        }
+        return studentRepository.saveAll(students);
     }
 }

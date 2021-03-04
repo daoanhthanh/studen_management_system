@@ -5,6 +5,7 @@ import hanu.edu.ems.domains.Timetable.dto.CreateTimetableDTO;
 import hanu.edu.ems.domains.Timetable.dto.UpdateTimetableDTO;
 import hanu.edu.ems.domains.Timetable.entity.Timetable;
 import io.swagger.v3.oas.annotations.Operation;
+import io.swagger.v3.oas.annotations.Parameter;
 import io.swagger.v3.oas.annotations.responses.ApiResponse;
 import io.swagger.v3.oas.annotations.responses.ApiResponses;
 import io.swagger.v3.oas.annotations.tags.Tag;
@@ -64,7 +65,7 @@ public class TimetableController implements CRUDController<Timetable, Long, Crea
     @PreAuthorize("hasAnyAuthority('ADMIN', 'STUDENT')")
     @GetMapping
     @PageableAsQueryParam
-    public Page<Timetable> getMany(Pageable pageable) {
+    public Page<Timetable> getMany(@Parameter(name = "Filter", hidden = true) Pageable pageable) {
         return timetableService.getMany(pageable);
     }
 
