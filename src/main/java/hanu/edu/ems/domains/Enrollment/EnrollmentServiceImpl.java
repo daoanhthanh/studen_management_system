@@ -70,7 +70,7 @@ public class EnrollmentServiceImpl implements EnrollmentService {
     }
 
     @Override
-    public List<Enrollment> getAll() {
+    public List<Enrollment> findAll() {
         return enrollmentRepository.findAll();
     }
 
@@ -80,7 +80,27 @@ public class EnrollmentServiceImpl implements EnrollmentService {
     }
 
     @Override
-    public Page<Enrollment> getMany(Pageable pageable) {
+    public Page<Enrollment> findAll(Pageable pageable) {
         return enrollmentRepository.findAll(pageable);
+    }
+
+    @Override
+    public Page<Enrollment> findAllByStudentId(Long studentID, Pageable pageable) {
+        return enrollmentRepository.findByStudentId(studentID, pageable);
+    }
+
+    @Override
+    public List<Enrollment> findAllByStudentId(Long studentID) {
+        return enrollmentRepository.findAllByStudentId(studentID);
+    }
+
+    @Override
+    public List<Enrollment> findAllByCourseReleaseId(Long courseReleaseID) {
+        return enrollmentRepository.findAllByCourseReleaseId(courseReleaseID);
+    }
+
+    @Override
+    public Page<Enrollment> findAllByCourseReleaseId(Long courseReleaseID, Pageable pageable) {
+        return enrollmentRepository.findAllByCourseReleaseId(courseReleaseID, pageable);
     }
 }

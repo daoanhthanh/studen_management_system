@@ -55,7 +55,7 @@ public class CourseServiceImpl implements CourseService {
     }
 
     @Override
-    public List<Course> getAll() {
+    public List<Course> findAll() {
         return courseRepository.findAll();
     }
 
@@ -65,7 +65,27 @@ public class CourseServiceImpl implements CourseService {
     }
 
     @Override
-    public Page<Course> getMany(Pageable pageable) {
+    public Page<Course> findAll(Pageable pageable) {
         return courseRepository.findAll(pageable);
+    }
+
+    @Override
+    public List<Course> findAllByDepartmentID(Long departmentID) {
+        return courseRepository.findAllByDepartmentId(departmentID);
+    }
+
+    @Override
+    public Page<Course> findAllByDepartmentID(Long departmentID, Pageable pageable) {
+        return courseRepository.findAllByDepartmentId(departmentID, pageable);
+    }
+
+    @Override
+    public Page<Course> findAllByNameLike(String partialName, Pageable pageable) {
+        return courseRepository.findAllByNameLike(partialName, pageable);
+    }
+
+    @Override
+    public List<Course> findAllByNameLike(String partialName) {
+        return courseRepository.findAllByNameLike(partialName);
     }
 }

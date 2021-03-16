@@ -61,7 +61,7 @@ public class TimetableServiceImpl implements TimetableService {
     }
 
     @Override
-    public List<Timetable> getAll() {
+    public List<Timetable> findAll() {
         return timeTableRepository.findAll();
     }
 
@@ -71,7 +71,27 @@ public class TimetableServiceImpl implements TimetableService {
     }
 
     @Override
-    public Page<Timetable> getMany(Pageable pageable) {
+    public Page<Timetable> findAll(Pageable pageable) {
         return timeTableRepository.findAll(pageable);
+    }
+
+    @Override
+    public Timetable suggestForStudent(String studentID) {
+        return null;
+    }
+
+    @Override
+    public Timetable suggestForTeacher(String teacherID) {
+        return null;
+    }
+
+    @Override
+    public Timetable getForStudent(String studentID) {
+        return null;
+    }
+
+    @Override
+    public Timetable getForTeacher(String teacherID) {
+        return null;
     }
 }

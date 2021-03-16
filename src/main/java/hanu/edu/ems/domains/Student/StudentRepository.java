@@ -11,6 +11,8 @@ import org.springframework.transaction.annotation.Transactional;
 import javax.validation.constraints.Email;
 import javax.validation.constraints.Size;
 
+import java.util.List;
+
 import static hanu.edu.ems.domains.User.entity.User.MAX_LENGTH_FIRST_NAME;
 import static hanu.edu.ems.domains.User.entity.User.MAX_LENGTH_LAST_NAME;
 import static hanu.edu.ems.domains.User.entity.User.MAX_LENGTH_PHONE_NUMBER;
@@ -23,7 +25,9 @@ import static hanu.edu.ems.domains.User.entity.User.MIN_LENGTH_PHONE_NUMBER;
 @Transactional(readOnly = true)
 public interface StudentRepository extends JpaRepository<Student, Long> {
 
-    Page<Student> findByDepartmentId(Long departmentId, Pageable pageable);
+    Page<Student> findAllByDepartmentId(Long departmentId, Pageable pageable);
+
+    List<Student> findAllByDepartmentId(Long departmentId);
 
     @Query("SELECT s FROM Student s " +
         "JOIN s.enrollments e " +
@@ -42,5 +46,5 @@ public interface StudentRepository extends JpaRepository<Student, Long> {
             "OR u.phoneNumber LIKE %?1% " +
             "OR u.email LIKE %?1% " +
             "OR u.lastName LIKE %?1%")
-    Page<Student> findByKeyword(String keyword, Pageable pageable);
+    Page<Student> findAllByKeyword(String keyword, Pageable pageable);
 }

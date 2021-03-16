@@ -1,7 +1,5 @@
 package hanu.edu.ems.domains.Department;
 
-import hanu.edu.ems.domains.Course.dto.CreateCourseDTO;
-import hanu.edu.ems.domains.Course.dto.UpdateCourseDTO;
 import hanu.edu.ems.domains.Department.dto.CreateDepartmentDTO;
 import hanu.edu.ems.domains.Department.dto.UpdateDepartmentDTO;
 import hanu.edu.ems.domains.Department.entity.Department;
@@ -47,7 +45,7 @@ public class DepartmentServiceImpl implements DepartmentService {
     }
 
     @Override
-    public List<Department> getAll() {
+    public List<Department> findAll() {
         return departmentRepository.findAll();
     }
 
@@ -57,7 +55,22 @@ public class DepartmentServiceImpl implements DepartmentService {
     }
 
     @Override
-    public Page<Department> getMany(Pageable pageable) {
+    public Page<Department> findAll(Pageable pageable) {
         return departmentRepository.findAll(pageable);
+    }
+
+    @Override
+    public boolean isCodeUnique(String code) {
+        return departmentRepository.existsByCode(code);
+    }
+
+    @Override
+    public Page<Department> findAllByKeyword(String keyword, Pageable pageable) {
+        return departmentRepository.findAllByNameLike(keyword, pageable);
+    }
+
+    @Override
+    public List<Department> findByKeyword(String keyword) {
+        return departmentRepository.findAllByNameLike(keyword);
     }
 }

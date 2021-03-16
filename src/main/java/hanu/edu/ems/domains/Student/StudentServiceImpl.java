@@ -8,6 +8,7 @@ import hanu.edu.ems.domains.Department.entity.Department;
 import hanu.edu.ems.domains.Student.dto.CreateStudentDTO;
 import hanu.edu.ems.domains.Student.dto.UpdateStudentDTO;
 import hanu.edu.ems.domains.Student.entity.Student;
+import lombok.extern.slf4j.Slf4j;
 import org.modelmapper.ModelMapper;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.Page;
@@ -21,6 +22,7 @@ import java.util.Collections;
 import java.util.List;
 
 @Service
+@Slf4j
 public class StudentServiceImpl implements StudentService {
 
     private final StudentRepository studentRepository;
@@ -61,7 +63,7 @@ public class StudentServiceImpl implements StudentService {
     public Student updateById(Long id, UpdateStudentDTO updateStudentDTO) {
         Student student = studentRepository.findById(id).orElseThrow(EntityNotFoundException::new);
 
-        modelMapper.map(updateStudentDTO, modelMapper);
+        modelMapper.map(updateStudentDTO, student);
 
         Department department = departmentRepository.findById(updateStudentDTO.getDepartmentID()).orElseThrow(EntityNotFoundException::new);
         student.setDepartment(department);
@@ -75,12 +77,12 @@ public class StudentServiceImpl implements StudentService {
     }
 
     @Override
-    public List<Student> getAll() {
+    public List<Student> findAll() {
         return studentRepository.findAll();
     }
 
     @Override
-    public Page<Student> getMany(Pageable pageable) {
+    public Page<Student> findAll(Pageable pageable) {
         return studentRepository.findAll(pageable);
     }
 
@@ -91,7 +93,12 @@ public class StudentServiceImpl implements StudentService {
 
     @Override
     public Page<Student> findByDepartmentId(Long departmentId, Pageable pageable) {
-        return studentRepository.findByDepartmentId(departmentId, pageable);
+        return studentRepository.findAllByDepartmentId(departmentId, pageable);
+    }
+
+    @Override
+    public List<Student> findByDepartmentId(Long departmentId) {
+        return studentRepository.findAllByDepartmentId(departmentId);
     }
 
     @Override
@@ -106,7 +113,7 @@ public class StudentServiceImpl implements StudentService {
 
     @Override
     public Page<Student> findByKeyWord(String keyword, Pageable pageable) {
-        return studentRepository.findByKeyword(keyword, pageable);
+        return studentRepository.findAllByKeyword(keyword, pageable);
     }
 
     public List<Student> createManyStudents(List<CreateStudentDTO> createStudentDTOList) {

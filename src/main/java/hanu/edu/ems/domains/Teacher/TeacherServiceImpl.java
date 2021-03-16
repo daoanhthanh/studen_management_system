@@ -68,7 +68,7 @@ public class TeacherServiceImpl implements TeacherService {
     }
 
     @Override
-    public List<Teacher> getAll() {
+    public List<Teacher> findAll() {
         return teacherRepository.findAll();
     }
 
@@ -78,7 +78,22 @@ public class TeacherServiceImpl implements TeacherService {
     }
 
     @Override
-    public Page<Teacher> getMany(Pageable pageable) {
+    public Page<Teacher> findAll(Pageable pageable) {
         return teacherRepository.findAll(pageable);
+    }
+
+    @Override
+    public Page<Teacher> findAllByDepartmentId(Long departmentID, Pageable pageable) {
+        return teacherRepository.findByDepartmentId(departmentID, pageable);
+    }
+
+    @Override
+    public List<Teacher> findAllByDepartmentId(Long departmentID) {
+        return teacherRepository.findByDepartmentId(departmentID);
+    }
+
+    @Override
+    public Page<Teacher> findByKeyWord(String keyword, Pageable pageable) {
+        return teacherRepository.findByKeyword(keyword, pageable);
     }
 }

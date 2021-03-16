@@ -14,13 +14,15 @@ public interface StudentService extends CRUDService<Student, Long, CreateStudent
 
     Page<Student> findByDepartmentId(Long departmentId, Pageable pageable);
 
+    List<Student> findByDepartmentId(Long departmentId);
+
     Page<Student> findByCourseReleaseId(Long courseReleaseId, Pageable pageable);
 
     Page<Student> findByCourseId(Long courseId, Pageable pageable);
 
     Page<Student> findByKeyWord(String keyword, Pageable pageRequest);
 
-    Page<Student> getMany(Pageable pageRequest);
+    Page<Student> findAll(Pageable pageRequest);
 
     List<Student> createManyStudents(List<CreateStudentDTO> createStudentDTOList);
 }

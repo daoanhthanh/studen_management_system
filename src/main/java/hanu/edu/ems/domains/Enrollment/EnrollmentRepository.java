@@ -7,10 +7,17 @@ import org.springframework.data.jpa.repository.JpaRepository;
 import org.springframework.stereotype.Repository;
 import org.springframework.transaction.annotation.Transactional;
 
+import java.util.List;
+
 @Repository
 @Transactional(readOnly = true)
 public interface EnrollmentRepository extends JpaRepository<Enrollment, Long> {
-    Page<Enrollment> findAllByStudentId(Long studentId, Pageable pageable);
+
+    List<Enrollment> findAllByStudentId(Long studentId);
+
+    Page<Enrollment> findByStudentId(Long studentId, Pageable pageable);
 
     Page<Enrollment> findAllByCourseReleaseId(Long courseReleaseId, Pageable pageable);
+
+    List<Enrollment> findAllByCourseReleaseId(Long courseReleaseId);
 }

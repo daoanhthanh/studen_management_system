@@ -11,7 +11,6 @@ import io.swagger.v3.oas.annotations.responses.ApiResponses;
 import io.swagger.v3.oas.annotations.tags.Tag;
 import org.springdoc.core.converters.models.PageableAsQueryParam;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.core.convert.support.GenericConversionService;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
 import org.springframework.security.access.prepost.PreAuthorize;
@@ -28,7 +27,6 @@ import javax.validation.Valid;
 import java.util.List;
 
 @RestController
-@RequestMapping("/timetables")
 @Tag(name = "Timetable Manager", description = "The Timetable API")
 public class TimetableController implements CRUDController<Timetable, Long, CreateTimetableDTO, UpdateTimetableDTO> {
 
@@ -41,7 +39,7 @@ public class TimetableController implements CRUDController<Timetable, Long, Crea
 
     @Override
     @Operation(summary = "Create a new timetable for a particular course")
-    @PostMapping
+    @PostMapping("/timetables")
     @PreAuthorize("hasAuthority('ADMIN')")
     @ApiResponses(value = {
         @ApiResponse(responseCode = "400", description = "Missing Request Parameter"),
@@ -55,31 +53,31 @@ public class TimetableController implements CRUDController<Timetable, Long, Crea
     @Override
     @Operation(summary = "Get all timetables")
     @PreAuthorize("hasAnyAuthority('ADMIN', 'STUDENT')")
-    @GetMapping(value = "/all")
-    public List<Timetable> getAll() {
-        return timetableService.getAll();
+    @GetMapping(value = "/timetables/all")
+    public List<Timetable> findAll() {
+        return timetableService.findAll();
     }
 
     @Override
     @Operation(summary = "Get timetables with paginating and sorting options")
     @PreAuthorize("hasAnyAuthority('ADMIN', 'STUDENT')")
-    @GetMapping
+    @GetMapping("/timetables")
     @PageableAsQueryParam
-    public Page<Timetable> getMany(@Parameter(name = "Filter", hidden = true) Pageable pageable) {
-        return timetableService.getMany(pageable);
+    public Page<Timetable> findAll(@Parameter(name = "Pagination", hidden = true) Pageable pageable) {
+        return timetableService.findAll(pageable);
     }
 
     @Override
     @Operation(summary = "Get timetable by ID")
     @PreAuthorize("hasAnyAuthority('ADMIN', 'STUDENT')")
-    @GetMapping(value = "/{id}")
+    @GetMapping(value = "/timetables/{id}")
     public Timetable getByID(@PathVariable Long id) {
         return timetableService.getById(id);
     }
 
     @Override
     @Operation(summary = "Update a timetable by ID")
-    @PutMapping(value = "/{id}")
+    @PutMapping(value = "/timetables/{id}")
     @ApiResponses(value = {
         @ApiResponse(responseCode = "400", description = "Missing Request Parameter"),
         @ApiResponse(responseCode = "422", description = "Input validation(s) failed"),
@@ -93,8 +91,36 @@ public class TimetableController implements CRUDController<Timetable, Long, Crea
     @Override
     @Operation(summary = "Delete a timetable by ID")
     @PreAuthorize("hasAuthority('ADMIN')")
-    @DeleteMapping(value = "/{id}")
+    @DeleteMapping(value = "/timetables/{id}")
     public void deleteByID(@PathVariable Long id) {
         timetableService.deleteById(id);
+    }
+
+    @Operation(summary = "Suggest a Timetable for a Student by Student ID")
+    @PreAuthorize("hasAuthority('ADMIN')")
+    @PostMapping(value = "/students/{studentID}/timetable/suggest")
+    public Timetable suggestForStudent(@PathVariable String studentID) {
+        return timetableService.suggestForStudent(studentID);
+    }
+
+    @Operation(summary = "Suggest a Timetable for a Teacher by Teacher ID")
+    @PreAuthorize("hasAuthority('ADMIN')")
+    @PostMapping(value = "/teachers/{teacherID}/timetable/suggest")
+    public Timetable suggestForTeacher(@PathVariable String teacherID) {
+        return timetableService.suggestForTeacher(teacherID);
+    }
+
+    @Operation(summary = "Get a Timetable of a Teacher by Teacher ID")
+    @PreAuthorize("hasAuthority('ADMIN')")
+    @GetMapping(value = "/students/{studentID}/timetable")
+    public Timetable getForStudent(@PathVariable String studentID) {
+        return timetableService.getForStudent(studentID);
+    }
+
+    @Operation(summary = "Get a Timetable of a Teacher by Teacher ID")
+    @PreAuthorize("hasAuthority('ADMIN')")
+    @GetMapping(value = "/teachers/{teacherID}/timetable")
+    public Timetable getForTeacher(@PathVariable String teacherID) {
+        return timetableService.getForTeacher(teacherID);
     }
 }
