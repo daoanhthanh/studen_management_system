@@ -33,7 +33,7 @@
     <description>Hanu Education Management System</description>
     <properties>
         <java.version>1.8</java.version>
-        <maven.test.skip>true</maven.test.skip>
+<!--        <maven.test.skip>true</maven.test.skip>-->
     </properties>
     <dependencies>
         <dependency>
@@ -168,7 +168,7 @@
                 <version>2.2.0</version>
                 <configuration>
                     <projectId>sqa-2020</projectId>
-                    <version>18</version>
+                    <version>22</version>
                     <stage.enableJarSplitting>true</stage.enableJarSplitting>
                     <deploy.stopPreviousVersion>true</deploy.stopPreviousVersion>
                     <cloudSdkHome>/usr/lib/google-cloud-sdk</cloudSdkHome>

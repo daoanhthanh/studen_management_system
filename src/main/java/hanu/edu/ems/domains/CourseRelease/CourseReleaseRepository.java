@@ -15,4 +15,6 @@ public interface CourseReleaseRepository extends JpaRepository<CourseRelease, Lo
     Page<CourseRelease> findAllByCourseId(Long courseId, Pageable pageable);
 
     List<CourseRelease> findAllByCourseId(Long courseId);
+
+    Integer countAllByCourseIdAndIsActiveIsTrue(Long courseId);
 }

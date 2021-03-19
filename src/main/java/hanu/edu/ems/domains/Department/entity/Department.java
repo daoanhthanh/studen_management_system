@@ -4,6 +4,7 @@ import com.fasterxml.jackson.annotation.JsonIgnore;
 import hanu.edu.ems.base.TimeStamps;
 import hanu.edu.ems.domains.Course.entity.Course;
 import hanu.edu.ems.domains.Student.entity.Student;
+import hanu.edu.ems.domains.Teacher.entity.Teacher;
 import lombok.AllArgsConstructor;
 import lombok.Builder;
 import lombok.Data;
@@ -20,7 +21,6 @@ import javax.persistence.GenerationType;
 import javax.persistence.Id;
 import javax.persistence.OneToMany;
 import javax.persistence.Table;
-import javax.validation.constraints.NotNull;
 import javax.validation.constraints.PastOrPresent;
 import javax.validation.constraints.Size;
 import java.time.LocalDateTime;
@@ -66,6 +66,14 @@ public class Department implements TimeStamps {
     @EqualsAndHashCode.Exclude
     @ToString.Exclude
     private List<Course> courses;
+
+    // One department has many teachers
+    @JsonIgnore
+    @Singular
+    @OneToMany(mappedBy = "department")
+    @EqualsAndHashCode.Exclude
+    @ToString.Exclude
+    private List<Teacher> teachers;
 
     @PastOrPresent
     private LocalDateTime createdAt;

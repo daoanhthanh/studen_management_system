@@ -117,4 +117,16 @@ public class CourseController {
     public Page<Course> findAllByDepartmentID(@PathVariable Long departmentID, @Parameter(name = "Pagination", hidden = true) Pageable pageable) {
         return courseService.findAllByDepartmentID(departmentID, pageable);
     }
+
+    @PreAuthorize("hasAnyAuthority('ADMIN')")
+    @Operation(summary = "Check if an Course's registration code has not been registered before in the system.")
+    @ApiResponses(value = {
+        @ApiResponse(responseCode = "400", description = "Something went wrong"),
+        @ApiResponse(responseCode = "403", description = "Access denied"),
+        @ApiResponse(responseCode = "404", description = "The username is not valid"),
+        @ApiResponse(responseCode = "500", description = "Expired or invalid JWT token")})
+    @GetMapping(value = "/Course/checkUniqueness/registrationCode/{registrationCode}")
+    public boolean isRegistrationCodeUnique(@PathVariable String registrationCode) {
+        return courseService.isRegistrationCodeUnique(registrationCode);
+    }
 }

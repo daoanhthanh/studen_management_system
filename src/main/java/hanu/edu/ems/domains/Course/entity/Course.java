@@ -12,6 +12,7 @@ import lombok.NoArgsConstructor;
 import lombok.Singular;
 import lombok.ToString;
 
+import javax.persistence.Column;
 import javax.persistence.Entity;
 import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
@@ -20,6 +21,8 @@ import javax.persistence.JoinColumn;
 import javax.persistence.ManyToOne;
 import javax.persistence.OneToMany;
 import javax.persistence.Table;
+import javax.validation.constraints.Max;
+import javax.validation.constraints.Min;
 import javax.validation.constraints.NotNull;
 import javax.validation.constraints.PastOrPresent;
 import javax.validation.constraints.Size;
@@ -38,8 +41,17 @@ import java.util.List;
 @Builder
 public class Course implements TimeStamps {
 
+    public static final int MIN_LENGTH_REGISTRATION_CODE = 7;
+    public static final int MAX_LENGTH_REGISTRATION_CODE = 7;
+
     public static final int MIN_LENGTH_NAME = 2;
     public static final int MAX_LENGTH_NAME = 50;
+
+    public static final int MIN_NUMBER_OF_CREDITS = 0;
+    public static final int MAX_NUMBER_OF_CREDITS = 10;
+
+    public static final int MIN_REQUIRED_SCHOOL_YEAR = 1;
+    public static final int MAX_REQUIRED_SCHOOL_YEAR = 4;
 
     /**
      * The ID of this course
@@ -48,11 +60,29 @@ public class Course implements TimeStamps {
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
 
+    @NotNull
+    @Column(unique = true)
+    @Size(min = MIN_LENGTH_REGISTRATION_CODE, max = MAX_LENGTH_REGISTRATION_CODE)
+    private String registrationCode;
+
     /**
      * The name of the course
      */
+    @NotNull
     @Size(min = MIN_LENGTH_NAME, max = MAX_LENGTH_NAME)
     private String name;
+
+    @NotNull
+    @Min(MIN_NUMBER_OF_CREDITS)
+    @Max(MAX_NUMBER_OF_CREDITS)
+    private Integer numberOfCredits;
+
+    @NotNull
+    @Min(MIN_REQUIRED_SCHOOL_YEAR)
+    @Max(MAX_REQUIRED_SCHOOL_YEAR)
+    private Integer requiredSchoolYear;
+
+    private Integer activeReleasesCount;
 
     /**
      * One course belongs to one department

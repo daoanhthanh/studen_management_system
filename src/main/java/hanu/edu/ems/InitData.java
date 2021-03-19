@@ -32,10 +32,13 @@ import hanu.edu.ems.domains.User.dto.CreateUserDTO;
 import hanu.edu.ems.domains.User.entity.Gender;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.context.annotation.Profile;
+import org.springframework.core.io.ClassPathResource;
 import org.springframework.stereotype.Service;
 
 import java.io.FileReader;
 import java.io.IOException;
+import java.io.InputStreamReader;
 import java.time.LocalDate;
 import java.util.ArrayList;
 import java.util.Arrays;
@@ -88,7 +91,8 @@ public class InitData {
 
     static List<List<String>> parse(String fileName) {
         List<List<String>> records = new ArrayList<>();
-        try (CSVReader csvReader = new CSVReader(new FileReader(fileName))) {
+
+        try (CSVReader csvReader = new CSVReader(new InputStreamReader(new ClassPathResource(fileName).getInputStream()))) {
             String[] values;
             while ((values = csvReader.readNext()) != null) {
                 records.add(Arrays.asList(values));
@@ -118,17 +122,17 @@ public class InitData {
                     .username(username)
                     .password(password)
                     .gender(Gender.MALE)
-                    .firstName("Minh")
-                    .lastName("Tang Ba")
+                    .firstName("Admin")
+                    .lastName("SQA 2021")
                     .email("minhtb.4c18@s.hanu.edu.vn")
-                    .phoneNumber("0904842084")
+                    .phoneNumber("0969696969")
                     .role(AuthorityName.ADMIN)
                     .dob(LocalDate.of(2000, 12, 4))
                     .build();
 
             userService.create(createUserDTO);
 
-            testData();
+//            testData();
         } else {
             log.info("Data has been previously initialized, ignoring InitData");
             log.info("If you want to re-initialize the data, reset the database ems (by drop & create database ems; again), and restart the application");
@@ -147,20 +151,16 @@ public class InitData {
 
         List<CreateTeacherDTO> createTeacherDTOList = createTeacherDTOList();
 
-        for (CreateTeacherDTO teacher: createTeacherDTOList) {
-            log.info(teacher.toString());
-        }
         List<Teacher> teacherList = testDataTeacher(createTeacherDTOList);
-
-        for (Teacher teacher: teacherList) {
-            log.info(teacher.toString());
-        }
 
         CreateCourseDTO createCourseDTO =
             CreateCourseDTO.builder()
                 .name("Data Structure and Algorithm")
                 // One course belongs to ong department
                 .departmentID(departmentList.get(0).getId())
+                .numberOfCredits(3)
+                .registrationCode("FIT2AIN")
+                .requiredSchoolYear(2)
                 .build();
 
         Course course = courseService.create(createCourseDTO);
@@ -176,6 +176,9 @@ public class InitData {
         CreateCourseReleaseDTO createCourseReleaseDTO =
             CreateCourseReleaseDTO.builder()
                 .season(Season.FALL)
+                .startDate(LocalDate.of(2020, 6, 1))
+                .endDate(LocalDate.of(2021, 12, 1))
+                .isActive(true)
                 // One course release belongs to one course
                 .courseID(course.getId())
                 // One course release is assigned to one teacher
@@ -215,7 +218,7 @@ public class InitData {
     }
 
     List<CreateDepartmentDTO> createDepartmentDTOList() {
-        List<List<String>> rows = parse("src/main/java/hanu/edu/ems/faculties_parsed.csv");
+        List<List<String>> rows = parse("static/faculties_parsed.csv");
 
         List<CreateDepartmentDTO> createDepartmentDTOs = new ArrayList<>();
 
@@ -233,15 +236,15 @@ public class InitData {
     }
 
     List<Student> testDataStudent(List<CreateStudentDTO> createStudentDTOList) {
-        log.debug("Inserting " + createStudentDTOList.size() + " records to database...");
+        log.info("Inserting " + createStudentDTOList.size() + " student records to database...");
         return studentService.createManyStudents(createStudentDTOList);
     }
 
     List<CreateStudentDTO> createStudentDTOList() {
-        log.debug("Parsing approximately 2500 rows...");
-        List<List<String>> rows = parse("src/main/java/hanu/edu/ems/students_parsed.csv");
+        log.info("Parsing approximately 2500 student rows...");
+        List<List<String>> rows = parse("static/students_parsed.csv");
 
-        log.debug("Parsing completed, begin to convert...");
+        log.info("Parsing completed, begin to convert...");
         List<CreateStudentDTO> createStudentDTOList = new ArrayList<>();
 
         int count = 0;
@@ -288,7 +291,7 @@ public class InitData {
                 log.debug("Done " + count + "/" + rows.size());
             }
         }
-        log.debug("Done converting");
+        log.info("Done converting students data");
         return createStudentDTOList;
     }
 
@@ -304,7 +307,7 @@ public class InitData {
     }
 
     List<CreateTeacherDTO> createTeacherDTOList() {
-        List<List<String>> rows = parse("src/main/java/hanu/edu/ems/teachers_parsed.csv");
+        List<List<String>> rows = parse("static/teachers_parsed.csv");
         List<CreateTeacherDTO> ret = new ArrayList<>();
 
         for (List<String> row: rows) {

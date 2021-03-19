@@ -110,7 +110,7 @@ public class TimetableController implements CRUDController<Timetable, Long, Crea
         return timetableService.suggestForTeacher(teacherID);
     }
 
-    @Operation(summary = "Get a Timetable of a Teacher by Teacher ID")
+    @Operation(summary = "Get a Timetable of a Student by Student ID")
     @PreAuthorize("hasAuthority('ADMIN')")
     @GetMapping(value = "/students/{studentID}/timetable")
     public Timetable getForStudent(@PathVariable String studentID) {
@@ -123,4 +123,6 @@ public class TimetableController implements CRUDController<Timetable, Long, Crea
     public Timetable getForTeacher(@PathVariable String teacherID) {
         return timetableService.getForTeacher(teacherID);
     }
+
+
 }

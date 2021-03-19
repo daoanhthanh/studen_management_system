@@ -30,6 +30,7 @@ import javax.validation.constraints.Max;
 import javax.validation.constraints.Min;
 import javax.validation.constraints.NotNull;
 import javax.validation.constraints.PastOrPresent;
+import java.time.LocalDate;
 import java.time.LocalDateTime;
 import java.util.List;
 
@@ -77,6 +78,9 @@ public class CourseRelease implements TimeStamps {
     @Max(MAX_RELEASE_YEAR)
     private Integer releaseYear;
 
+    @NotNull
+    private Boolean isActive;
+
     // One course has many students
     @Singular
     @JsonIgnore
@@ -86,6 +90,10 @@ public class CourseRelease implements TimeStamps {
     @OneToOne
     @JoinColumn(name = "timetable_id", nullable = false)
     private Timetable timeTable;
+
+    private LocalDate startDate;
+
+    private LocalDate endDate;
 
     @PastOrPresent
     private LocalDateTime createdAt;

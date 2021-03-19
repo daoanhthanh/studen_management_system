@@ -85,11 +85,21 @@ public class TimetableServiceImpl implements TimetableService {
         return null;
     }
 
+    /**
+     *
+     * @param studentID The id of the student
+     * @return
+     */
     @Override
     public Timetable getForStudent(String studentID) {
         return null;
     }
 
+    /**
+     *
+     * @param teacherID The id of the teacher
+     * @return
+     */
     @Override
     public Timetable getForTeacher(String teacherID) {
         return null;

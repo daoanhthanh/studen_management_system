@@ -2,8 +2,10 @@ package hanu.edu.ems.config.auth;
 
 import hanu.edu.ems.domains.User.UserService;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.beans.factory.annotation.Value;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
+import org.springframework.context.annotation.PropertySource;
 import org.springframework.http.HttpMethod;
 import org.springframework.security.authentication.AuthenticationManager;
 import org.springframework.security.config.annotation.authentication.builders.AuthenticationManagerBuilder;
@@ -52,6 +54,9 @@ public class SecurityConfigurer extends WebSecurityConfigurerAdapter {
 
     private UserService userService;
 
+    @Value("${security.require-ssl}")
+    private Boolean requireHttps;
+
     private final JwtRequestFilter jwtRequestFilter;
 
     @Autowired
@@ -71,6 +76,9 @@ public class SecurityConfigurer extends WebSecurityConfigurerAdapter {
 
     @Override
     protected void configure(HttpSecurity http) throws Exception {
+        if (requireHttps)
+            http.requiresChannel().anyRequest().requiresSecure();
+
         http.csrf().disable()
             .cors().and()
             .authorizeRequests().antMatchers(AUTH_WHITELIST).permitAll()

@@ -12,6 +12,7 @@ import lombok.NoArgsConstructor;
 import javax.validation.constraints.Max;
 import javax.validation.constraints.Min;
 import javax.validation.constraints.NotNull;
+import java.time.LocalDate;
 import java.time.LocalDateTime;
 
 @Data
@@ -27,14 +28,21 @@ public class CreateCourseReleaseDTO implements TimeStamps{
     private Long courseID;
 
     @NotNull
+    private Long timetableID;
+
+    @NotNull
     private Season season;
+
+    @NotNull
+    private Boolean isActive;
 
     @Min(CourseRelease.MIN_RELEASE_YEAR)
     @Max(CourseRelease.MAX_RELEASE_YEAR)
     private Integer releaseYear;
 
-    @NotNull
-    private Long timetableID;
+    private LocalDate startDate;
+
+    private LocalDate endDate;
 
     @JsonIgnore
     @Builder.Default

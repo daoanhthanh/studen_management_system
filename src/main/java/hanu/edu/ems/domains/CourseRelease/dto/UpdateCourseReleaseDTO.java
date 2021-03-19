@@ -8,9 +8,12 @@ import lombok.Builder;
 import lombok.Data;
 import lombok.NoArgsConstructor;
 
+import javax.validation.constraints.FutureOrPresent;
 import javax.validation.constraints.Max;
 import javax.validation.constraints.Min;
 import javax.validation.constraints.NotNull;
+import javax.validation.constraints.PastOrPresent;
+import java.time.LocalDate;
 import java.time.LocalDateTime;
 
 @Data
@@ -25,11 +28,17 @@ public class UpdateCourseReleaseDTO {
 
     private Season season;
 
+    private Boolean isActive;
+
+    private Long timetableID;
+
     @Min(CourseRelease.MIN_RELEASE_YEAR)
     @Max(CourseRelease.MAX_RELEASE_YEAR)
     private Integer releaseYear;
 
-    private Long timetableID;
+    private LocalDate startDate;
+
+    private LocalDate endDate;
 
     @JsonIgnore
     @Builder.Default
