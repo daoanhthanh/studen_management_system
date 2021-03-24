@@ -142,9 +142,5 @@ public class StudentTest {
     void testSetUpdatedAt() {
         student.setUpdatedAt(LocalDateTime.of(2021, Month.MARCH, 21, 15, 29, 27));
     }
-
-    public static Student getExampleStudent() {
-        return Student.builder().build();
-    }
 }
 

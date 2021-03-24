@@ -168,7 +168,7 @@
                 <version>2.2.0</version>
                 <configuration>
                     <projectId>sqa-2020</projectId>
-                    <version>22</version>
+                    <version>24</version>
                     <stage.enableJarSplitting>true</stage.enableJarSplitting>
                     <deploy.stopPreviousVersion>true</deploy.stopPreviousVersion>
                     <cloudSdkHome>/usr/lib/google-cloud-sdk</cloudSdkHome>

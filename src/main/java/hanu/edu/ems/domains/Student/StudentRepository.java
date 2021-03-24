@@ -22,7 +22,7 @@ import static hanu.edu.ems.domains.User.entity.User.MIN_LENGTH_PHONE_NUMBER;
 
 
 @Repository
-@Transactional(readOnly = true)
+@Transactional
 public interface StudentRepository extends JpaRepository<Student, Long> {
 
     Page<Student> findAllByDepartmentId(Long departmentId, Pageable pageable);

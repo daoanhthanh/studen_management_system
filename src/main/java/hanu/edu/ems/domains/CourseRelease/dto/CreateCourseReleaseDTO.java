@@ -25,9 +25,6 @@ public class CreateCourseReleaseDTO implements TimeStamps{
     private Long teacherID;
 
     @NotNull
-    private Long teacherID;
-
-    @NotNull
     private Long courseID;
 
     @NotNull

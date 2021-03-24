@@ -18,4 +18,6 @@ public interface CourseService extends CRUDService<Course, Long, CreateCourseDTO
     Page<Course> findAllByNameLike(String partialName, Pageable pageable);
 
     List<Course> findAllByNameLike(String partialName);
+
+    Boolean isRegistrationCodeUnique(String registrationCode);
 }

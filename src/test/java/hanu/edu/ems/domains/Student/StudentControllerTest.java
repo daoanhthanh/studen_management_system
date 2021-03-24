@@ -78,7 +78,7 @@ class StudentControllerTest {
     }
 
     @Test
-    void givenAdminAuthority_whenGetAll_thenReturnAllStudents() throws Exception {
+    void whenAdminGetAll_thenReturnAllStudents() throws Exception {
         List<Student> studentList = Arrays.asList(
             Student.builder().firstName("minh").build(),
             Student.builder().firstName("duong").build()
@@ -98,7 +98,7 @@ class StudentControllerTest {
     }
 
     @Test
-    void givenAdminAuthority_whenGetManyStudents_thenReturnStudentPage() throws Exception {
+    void whenAdminGetManyStudents_thenReturnStudentPage() throws Exception {
         Page<Student> studentPage = Page.empty();
         Pageable pageable = Pageable.unpaged();
         given(studentService.findAll(pageable)).willReturn(studentPage);
@@ -110,7 +110,7 @@ class StudentControllerTest {
     }
 
     @Test
-    void givenAdminAuthority_whenGetStudentWithID_thenReturnStudent() throws Exception {
+    void whenAdminGetStudentWithID_thenReturnStudent() throws Exception {
         Student student = Student.builder()
             .firstName("Minh")
             .build();
@@ -123,14 +123,15 @@ class StudentControllerTest {
     }
 
     @Test
-    void givenAdminAuthority_whenUpdateByID_thenReturnUpdatedResult() {
+    void whenAdminUpdateByID_thenReturnUpdatedResult() {
+
     }
 
     @Test
-    void deleteByID() {
+    void whenAdminDeleteByID_thenSuccess() {
     }
 
     @Test
-    void testFindAllStudentsOfDepartment() {
+    void whenAdminFindAllStudents_thenReturnAllStudents() {
     }
 }

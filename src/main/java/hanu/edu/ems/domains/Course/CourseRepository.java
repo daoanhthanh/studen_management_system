@@ -19,4 +19,6 @@ public interface CourseRepository extends JpaRepository<Course, Long> {
     Page<Course> findAllByNameLike(String partialName, Pageable pageable);
 
     List<Course> findAllByNameLike(String partialName);
+
+    boolean existsByRegistrationCode(String registrationCode);
 }

@@ -2,7 +2,7 @@ package hanu.edu.ems.config.exception;
 
 import lombok.AllArgsConstructor;
 import lombok.Data;
-    import lombok.NoArgsConstructor;
+import lombok.NoArgsConstructor;
 import lombok.Singular;
 import org.springframework.http.HttpStatus;
 
