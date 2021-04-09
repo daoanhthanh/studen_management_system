@@ -31,7 +31,7 @@ import java.util.List;
 @Data
 @AllArgsConstructor
 @NoArgsConstructor
-@Builder
+@Builder(toBuilder = true)
 public class Department implements TimeStamps {
 
     public static final int MIN_LENGTH_NAME = 2;

@@ -41,7 +41,7 @@ import java.util.List;
 @Table(name = "users")
 @AllArgsConstructor
 @NoArgsConstructor
-@SuperBuilder
+@SuperBuilder(toBuilder = true)
 @EntityListeners(UserEntityListener.class)
 public class User implements UserDetails, Serializable, TimeStamps {
 

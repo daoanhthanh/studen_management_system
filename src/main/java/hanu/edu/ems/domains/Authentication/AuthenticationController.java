@@ -4,7 +4,6 @@ import hanu.edu.ems.config.auth.JwtUtil;
 import hanu.edu.ems.domains.Authentication.dto.ChangePasswordDTO;
 import hanu.edu.ems.domains.Authentication.dto.LoginRequestDTO;
 import hanu.edu.ems.domains.User.UserService;
-import hanu.edu.ems.domains.User.entity.User;
 import io.swagger.v3.oas.annotations.Operation;
 import io.swagger.v3.oas.annotations.responses.ApiResponse;
 import io.swagger.v3.oas.annotations.responses.ApiResponses;
@@ -26,7 +25,6 @@ import org.springframework.web.bind.annotation.RestController;
 
 import javax.validation.Valid;
 
-import javax.validation.Valid;
 
 @RestController
 @RequestMapping("/auth")

@@ -4,7 +4,6 @@ import hanu.edu.ems.domains.CourseRelease.entity.CourseRelease;
 import hanu.edu.ems.domains.CourseRelease.entity.CourseReleaseTest;
 import hanu.edu.ems.domains.Student.StudentDataSample;
 import hanu.edu.ems.domains.Student.entity.Student;
-import hanu.edu.ems.domains.Student.entity.StudentTest;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 import org.mockito.InjectMocks;
@@ -39,7 +38,7 @@ public class EnrollmentTest {
 
     @Test
     void testSetStudent() {
-        enrollment.setStudent(StudentDataSample.getExampleStudent());
+        enrollment.setStudent(StudentDataSample.getExampleValidStudent());
     }
 
     @Test

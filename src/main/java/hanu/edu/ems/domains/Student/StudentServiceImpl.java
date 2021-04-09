@@ -65,8 +65,10 @@ public class StudentServiceImpl implements StudentService {
 
         modelMapper.map(updateStudentDTO, student);
 
-        Department department = departmentRepository.findById(updateStudentDTO.getDepartmentID()).orElseThrow(EntityNotFoundException::new);
-        student.setDepartment(department);
+        if (updateStudentDTO.getDepartmentID() != null) {
+            Department department = departmentRepository.findById(updateStudentDTO.getDepartmentID()).orElseThrow(EntityNotFoundException::new);
+            student.setDepartment(department);
+        }
 
         return studentRepository.save(student);
     }
@@ -88,7 +90,7 @@ public class StudentServiceImpl implements StudentService {
 
     @Override
     public Student getById(Long id) {
-        return studentRepository.findById(id).orElse(null);
+        return studentRepository.findById(id).orElseThrow(EntityNotFoundException::new);
     }
 
     @Override

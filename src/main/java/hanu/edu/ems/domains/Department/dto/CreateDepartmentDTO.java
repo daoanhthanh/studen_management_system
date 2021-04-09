@@ -14,7 +14,7 @@ import java.time.LocalDateTime;
 @Data
 @AllArgsConstructor
 @NoArgsConstructor
-@Builder
+@Builder(toBuilder = true)
 public class CreateDepartmentDTO implements TimeStamps {
 
     @Size(min = Department.MIN_LENGTH_NAME, max = Department.MAX_LENGTH_NAME)

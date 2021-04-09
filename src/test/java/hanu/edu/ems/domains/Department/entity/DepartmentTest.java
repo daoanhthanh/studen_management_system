@@ -57,11 +57,4 @@ public class DepartmentTest {
     void testSetUpdatedAt() {
         department.setUpdatedAt(LocalDateTime.of(2021, Month.MARCH, 21, 15, 35, 36));
     }
-
-    public static Department getExampleDepartment() {
-        return Department.builder()
-            .name("Faculty Of Information Technology")
-            .code("FIT")
-            .build();
-    }
 }

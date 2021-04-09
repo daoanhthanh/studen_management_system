@@ -144,10 +144,10 @@ public class RestResponseEntityExceptionHandler extends ResponseEntityExceptionH
         return message.replaceAll("hanu\\.edu\\.ems\\.?", "");
     }
 
-    @ResponseStatus(HttpStatus.INTERNAL_SERVER_ERROR)
-    @ExceptionHandler({Exception.class})
-    public ResponseEntity<Object> handleAll(Exception ex) {
-        BaseException baseException = new BaseException(HttpStatus.INTERNAL_SERVER_ERROR, ex.getLocalizedMessage(), Collections.singletonList("Unknown error occurred"));
-        return new ResponseEntity<>(baseException, new HttpHeaders(), baseException.getStatus());
-    }
+//    @ResponseStatus(HttpStatus.INTERNAL_SERVER_ERROR)
+//    @ExceptionHandler({Exception.class})
+//    public ResponseEntity<Object> handleAll(Exception ex) {
+//        BaseException baseException = new BaseException(HttpStatus.INTERNAL_SERVER_ERROR, ex.getLocalizedMessage(), Collections.singletonList("Unknown error occurred"));
+//        return new ResponseEntity<>(baseException, new HttpHeaders(), baseException.getStatus());
+//    }
 }

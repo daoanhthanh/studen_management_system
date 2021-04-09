@@ -1,9 +1,11 @@
 package hanu.edu.ems.domains.Student.entity;
 
 import com.fasterxml.jackson.annotation.JsonIgnore;
+import com.fasterxml.jackson.annotation.JsonInclude;
 import hanu.edu.ems.domains.Department.entity.Department;
 
 import javax.persistence.CascadeType;
+import javax.persistence.Column;
 import javax.persistence.Entity;
 import javax.persistence.JoinColumn;
 import javax.persistence.ManyToOne;
@@ -31,7 +33,8 @@ import lombok.experimental.SuperBuilder;
 @Data
 @AllArgsConstructor
 @NoArgsConstructor
-@SuperBuilder
+@SuperBuilder(toBuilder = true)
+@ToString(callSuper = true)
 public class Student extends User {
 
     public static final int MIN_SCHOOL_YEAR = 1975;

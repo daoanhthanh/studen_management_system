@@ -19,7 +19,7 @@ import static hanu.edu.ems.domains.Student.entity.Student.MIN_LENGTH_FULL_ADDRES
 @Data
 @AllArgsConstructor
 @NoArgsConstructor
-@SuperBuilder
+@SuperBuilder(toBuilder = true)
 public class UpdateStudentDTO extends UpdateUserDTO {
 
     @Min(Student.MIN_SCHOOL_YEAR)

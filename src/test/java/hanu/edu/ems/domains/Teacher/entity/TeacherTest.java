@@ -4,6 +4,7 @@ import hanu.edu.ems.domains.Authority.entity.Authority;
 import hanu.edu.ems.domains.Authority.entity.AuthorityName;
 import hanu.edu.ems.domains.CourseRelease.entity.CourseRelease;
 import hanu.edu.ems.domains.CourseRelease.entity.CourseReleaseTest;
+import hanu.edu.ems.domains.Department.DepartmentDataSample;
 import hanu.edu.ems.domains.Department.entity.Department;
 import hanu.edu.ems.domains.Department.entity.DepartmentTest;
 import hanu.edu.ems.domains.User.entity.Gender;
@@ -47,7 +48,7 @@ public class TeacherTest {
 
     @Test
     void testSetDepartment() {
-        teacher.setDepartment(DepartmentTest.getExampleDepartment());
+        teacher.setDepartment(DepartmentDataSample.getOneValidDepartment());
     }
 
     @Test

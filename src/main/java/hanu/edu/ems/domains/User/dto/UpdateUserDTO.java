@@ -17,7 +17,7 @@ import java.time.LocalDate;
 import java.time.LocalDateTime;
 
 @Data
-@SuperBuilder
+@SuperBuilder(toBuilder = true)
 @NoArgsConstructor
 @AllArgsConstructor
 public class UpdateUserDTO {
@@ -34,7 +34,6 @@ public class UpdateUserDTO {
     @Size(min = User.MIN_LENGTH_PHONE_NUMBER, max = User.MAX_LENGTH_PHONE_NUMBER)
     private String phoneNumber;
 
-    @NotNull
     private Gender gender;
 
     @PastOrPresent

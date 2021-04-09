@@ -1,29 +1,33 @@
 package hanu.edu.ems.domains.Student;
 
+import hanu.edu.ems.domains.Department.DepartmentDataSample;
 import hanu.edu.ems.domains.Department.DepartmentRepository;
 import hanu.edu.ems.domains.Department.entity.Department;
-import hanu.edu.ems.domains.Department.entity.DepartmentTest;
 import hanu.edu.ems.domains.Student.entity.Student;
 import lombok.extern.slf4j.Slf4j;
-import org.junit.jupiter.api.AfterEach;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.boot.test.autoconfigure.jdbc.AutoConfigureTestDatabase;
 import org.springframework.boot.test.autoconfigure.orm.jpa.AutoConfigureTestEntityManager;
 import org.springframework.boot.test.autoconfigure.orm.jpa.TestEntityManager;
 import org.springframework.boot.test.context.SpringBootTest;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.PageRequest;
 import org.springframework.data.domain.Pageable;
+import org.springframework.test.annotation.DirtiesContext;
 
 import javax.transaction.Transactional;
 import java.util.List;
 
 import static org.junit.jupiter.api.Assertions.assertEquals;
+import static org.junit.jupiter.api.Assertions.assertNotNull;
 
 @SpringBootTest
 @AutoConfigureTestEntityManager
 @Slf4j
+@DirtiesContext(classMode = DirtiesContext.ClassMode.BEFORE_EACH_TEST_METHOD)
+@AutoConfigureTestDatabase(replace = AutoConfigureTestDatabase.Replace.ANY)
 class StudentRepositoryTest {
 
     @Autowired
@@ -39,58 +43,63 @@ class StudentRepositoryTest {
 
     @BeforeEach
     void setUp() {
-        Department department = DepartmentTest.getExampleDepartment();
+        Department department = DepartmentDataSample.getOneValidDepartment();
+//        given(departmentRepository.findById(1L)).willReturn(Optional.of(department));
         this.department = departmentRepository.saveAndFlush(department);
-    }
 
-    @AfterEach
-    void tearDown() {
-        departmentRepository.deleteAll();
+        assertNotNull(this.department);
     }
 
     @Test
     @Transactional
     void testFindAllByDepartmentId() {
+
+        log.info("DEPARTMENT");
+        log.info(department.toString());
         // Given
-        List<Student> sampleStudents = StudentDataSample.get3();
+        List<Student> sampleStudents = StudentDataSample.get3Students();
 
         Student minh = sampleStudents.get(0);
-        minh.setDepartment(this.department);
+        minh.setDepartment(department);
+        minh.setId(null);
 
         Student duong = sampleStudents.get(1);
-        duong.setDepartment(this.department);
+        duong.setDepartment(department);
+        duong.setId(null);
 
         Student thanh = sampleStudents.get(2);
-        thanh.setDepartment(this.department);
+        thanh.setDepartment(department);
+        thanh.setId(null);
 
         entityManager.persistAndFlush(minh);
         entityManager.persistAndFlush(duong);
         entityManager.persistAndFlush(thanh);
 
         // When
-        List<Student> students = studentRepository.findAllByDepartmentId(this.department.getId());
+        List<Student> students = studentRepository.findAllByDepartmentId(department.getId());
         // Then
         assertEquals(students.size(), 3);
 
         studentRepository.deleteAll();
-        List<Student> studentsList = studentRepository.findAll();
-        log.info("SIZE");
-        log.info(String.valueOf(studentsList.size()));
     }
 
     @Test
     @Transactional
     void findByCourseReleaseId() {
-        List<Student> sampleStudents = StudentDataSample.get3();
+
+        List<Student> sampleStudents = StudentDataSample.get3Students();
 
         Student minh = sampleStudents.get(0);
-        minh.setDepartment(this.department);
+        minh.setDepartment(department);
+        minh.setId(null);
 
         Student duong = sampleStudents.get(1);
-        duong.setDepartment(this.department);
+        duong.setDepartment(department);
+        duong.setId(null);
 
         Student thanh = sampleStudents.get(2);
-        thanh.setDepartment(this.department);
+        thanh.setDepartment(department);
+        thanh.setId(null);
 
         entityManager.persistAndFlush(minh);
         entityManager.persistAndFlush(duong);
@@ -105,16 +114,20 @@ class StudentRepositoryTest {
     @Test
     @Transactional
     void findByCourseId() {
-        List<Student> sampleStudents = StudentDataSample.get3();
+
+        List<Student> sampleStudents = StudentDataSample.get3Students();
 
         Student minh = sampleStudents.get(0);
-        minh.setDepartment(this.department);
+        minh.setDepartment(department);
+        minh.setId(null);
 
         Student duong = sampleStudents.get(1);
-        duong.setDepartment(this.department);
+        duong.setDepartment(department);
+        duong.setId(null);
 
         Student thanh = sampleStudents.get(2);
-        thanh.setDepartment(this.department);
+        thanh.setDepartment(department);
+        thanh.setId(null);
 
         entityManager.persistAndFlush(minh);
         entityManager.persistAndFlush(duong);
@@ -129,16 +142,20 @@ class StudentRepositoryTest {
     @Test
     @Transactional
     void findAllByKeyword() {
-        List<Student> sampleStudents = StudentDataSample.get3();
+
+        List<Student> sampleStudents = StudentDataSample.get3Students();
 
         Student minh = sampleStudents.get(0);
-        minh.setDepartment(this.department);
+        minh.setDepartment(department);
+        minh.setId(null);
 
         Student duong = sampleStudents.get(1);
-        duong.setDepartment(this.department);
+        duong.setDepartment(department);
+        duong.setId(null);
 
         Student thanh = sampleStudents.get(2);
-        thanh.setDepartment(this.department);
+        thanh.setDepartment(department);
+        thanh.setId(null);
 
         entityManager.persistAndFlush(minh);
         entityManager.persistAndFlush(duong);

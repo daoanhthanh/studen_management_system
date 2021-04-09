@@ -1,21 +1,26 @@
 package hanu.edu.ems.domains.Student;
 
 import com.fasterxml.jackson.databind.ObjectMapper;
-import hanu.edu.ems.domains.Department.DepartmentRepository;
+import hanu.edu.ems.domains.Department.DepartmentDataSample;
+import hanu.edu.ems.domains.Department.DepartmentService;
+import hanu.edu.ems.domains.Department.dto.CreateDepartmentDTO;
 import hanu.edu.ems.domains.Department.entity.Department;
-import hanu.edu.ems.domains.Department.entity.DepartmentTest;
 import hanu.edu.ems.domains.Student.dto.CreateStudentDTO;
+import hanu.edu.ems.domains.Student.dto.UpdateStudentDTO;
 import hanu.edu.ems.domains.Student.entity.Student;
 import hanu.edu.ems.domains.User.entity.Gender;
 import lombok.extern.slf4j.Slf4j;
-import org.junit.jupiter.api.AfterEach;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
+import org.modelmapper.Conditions;
+import org.modelmapper.ModelMapper;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.boot.test.autoconfigure.jdbc.AutoConfigureTestDatabase;
 import org.springframework.boot.test.autoconfigure.web.servlet.AutoConfigureMockMvc;
 import org.springframework.boot.test.context.SpringBootTest;
 import org.springframework.http.MediaType;
 import org.springframework.security.core.authority.SimpleGrantedAuthority;
+import org.springframework.test.annotation.DirtiesContext;
 import org.springframework.test.context.TestPropertySource;
 import org.springframework.test.web.servlet.MockMvc;
 import org.springframework.test.web.servlet.request.RequestPostProcessor;
@@ -25,8 +30,10 @@ import java.util.List;
 
 import static org.hamcrest.Matchers.contains;
 import static org.springframework.security.test.web.servlet.request.SecurityMockMvcRequestPostProcessors.user;
+import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.delete;
 import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.get;
 import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.post;
+import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.put;
 import static org.springframework.test.web.servlet.result.MockMvcResultHandlers.print;
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.content;
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.jsonPath;
@@ -36,32 +43,31 @@ import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.
 @AutoConfigureMockMvc
 @Slf4j
 @TestPropertySource(locations = "classpath:application-test.properties")
-public class StudentIntegrationTest {
+@DirtiesContext(classMode = DirtiesContext.ClassMode.BEFORE_EACH_TEST_METHOD)
+@AutoConfigureTestDatabase(replace = AutoConfigureTestDatabase.Replace.ANY)
+public class StudentControllerIntegrationTest {
+
+    private Department department;
 
     @Autowired
     private ObjectMapper objectMapper;
 
     @Autowired
+    private ModelMapper modelMapper;
+
+    @Autowired
     private MockMvc mockMvc;
 
     @Autowired
-    private StudentRepository studentRepository;
+    private StudentService studentService;
 
     @Autowired
-    private DepartmentRepository departmentRepository;
-
-    private Department department;
+    private DepartmentService departmentService;
 
     @BeforeEach
     public void setUp() {
-        Department department = DepartmentTest.getExampleDepartment();
-        this.department = departmentRepository.save(department);
-    }
-
-    @AfterEach
-    public void resetDb() {
-        studentRepository.deleteAll();
-        departmentRepository.deleteAll();
+        CreateDepartmentDTO createDepartmentDTO = DepartmentDataSample.getOneValidCreateDepartmentDTO();
+        this.department = departmentService.create(createDepartmentDTO);
     }
 
     private RequestPostProcessor adminAuthority() {
@@ -128,20 +134,20 @@ public class StudentIntegrationTest {
     @Test
     public void whenGetManyAsAdmin_thenReturnStudentsPage() throws Exception {
         // GIVEN
-        List<Student> sampleStudents = StudentDataSample.get3();
+        List<CreateStudentDTO> sampleDTOs = StudentDataSample.get3CreateStudentDTOs();
 
-        Student minh = sampleStudents.get(0);
-        minh.setDepartment(this.department);
+        CreateStudentDTO minhDTO = sampleDTOs.get(0);
+        minhDTO.setDepartmentID(this.department.getId());
 
-        Student duong = sampleStudents.get(1);
-        duong.setDepartment(this.department);
+        CreateStudentDTO duongDTO = sampleDTOs.get(1);
+        duongDTO.setDepartmentID(this.department.getId());
 
-        Student thanh = sampleStudents.get(2);
-        thanh.setDepartment(this.department);
+        CreateStudentDTO thanhDTO = sampleDTOs.get(2);
+        thanhDTO.setDepartmentID(this.department.getId());
 
-        minh = studentRepository.save(minh);
-        duong = studentRepository.save(duong);
-        thanh = studentRepository.save(thanh);
+        Student minh = studentService.create(minhDTO);
+        Student duong = studentService.create(duongDTO);
+        Student thanh = studentService.create(thanhDTO);
 
         mockMvc.perform(get("/students")
             .queryParam("size", "10")
@@ -177,20 +183,21 @@ public class StudentIntegrationTest {
 
     @Test
     public void whenGetAllAsAdmin_thenReturnAllStudents() throws Exception {
-        List<Student> sampleStudents = StudentDataSample.get3();
 
-        Student minh = sampleStudents.get(0);
-        minh.setDepartment(this.department);
+        List<CreateStudentDTO> sampleDTOs = StudentDataSample.get3CreateStudentDTOs();
 
-        Student duong = sampleStudents.get(1);
-        duong.setDepartment(this.department);
+        CreateStudentDTO minhDTO = sampleDTOs.get(0);
+        minhDTO.setDepartmentID(this.department.getId());
 
-        Student thanh = sampleStudents.get(2);
-        thanh.setDepartment(this.department);
+        CreateStudentDTO duongDTO = sampleDTOs.get(1);
+        duongDTO.setDepartmentID(this.department.getId());
 
-        minh = studentRepository.save(minh);
-        duong = studentRepository.save(duong);
-        thanh = studentRepository.save(thanh);
+        CreateStudentDTO thanhDTO = sampleDTOs.get(2);
+        thanhDTO.setDepartmentID(this.department.getId());
+
+        Student minh = studentService.create(minhDTO);
+        Student duong = studentService.create(duongDTO);
+        Student thanh = studentService.create(thanhDTO);
 
         mockMvc.perform(get("/students/all")
             .with(adminAuthority())
@@ -223,12 +230,59 @@ public class StudentIntegrationTest {
     }
 
     @Test
-    public void whenUpdateAsAdmin_thenReturnUpdated() {
+    public void whenUpdateAsAdmin_thenReturnUpdated() throws Exception {
 
+        CreateStudentDTO createStudentDTO = StudentDataSample.getExampleValidCreateStudentDTO();
+
+        createStudentDTO.setDepartmentID(this.department.getId());
+
+        Student existingStudent = studentService.create(createStudentDTO);
+
+        // Partial Update, will not work on null value
+        UpdateStudentDTO updateStudentDTO = UpdateStudentDTO.builder()
+            .email("1801040@s.hanu.edu.vn")
+            .build();
+
+        UpdateStudentDTO merged = modelMapper.map(createStudentDTO, UpdateStudentDTO.class);
+
+        modelMapper.getConfiguration().setPropertyCondition(Conditions.isNotNull());
+        modelMapper.map(updateStudentDTO, merged);
+
+        String content = objectMapper.writeValueAsString(merged);
+
+        mockMvc.perform(put("/students/" + existingStudent.getId())
+            .with(adminAuthority())
+            .contentType(MediaType.APPLICATION_JSON)
+            .content(content)
+        )
+            .andExpect(status().isOk())
+            .andExpect(jsonPath("$.department.id").value(createStudentDTO.getDepartmentID()))
+            .andExpect(jsonPath("$.email").value(updateStudentDTO.getEmail()))
+            .andExpect(jsonPath("$.dob").isArray())
+            .andExpect(jsonPath("$.firstName").value(createStudentDTO.getFirstName()))
+            .andExpect(jsonPath("$.lastName").value(createStudentDTO.getLastName()))
+            .andExpect(jsonPath("$.gender").value("Male"))
+            .andExpect(jsonPath("$.fatherName").value(createStudentDTO.getFatherName()))
+            .andExpect(jsonPath("$.motherName").value(createStudentDTO.getMotherName()))
+            .andExpect(jsonPath("$.fullAddress").value(createStudentDTO.getFullAddress()))
+            .andExpect(jsonPath("$.sinceYear").value(createStudentDTO.getSinceYear()))
+            .andExpect(jsonPath("$.phoneNumber").value(createStudentDTO.getPhoneNumber()))
+            .andExpect(jsonPath("$.username").value(createStudentDTO.getUsername()))
+            .andExpect(jsonPath("$.password").doesNotExist())
+            .andDo(print());
     }
 
     @Test
-    public void whenDeleteAsAdmin_thenSuccess() {
+    public void whenDeleteAsAdmin_thenSuccess() throws Exception {
 
+        CreateStudentDTO createStudentDTO = StudentDataSample.getExampleValidCreateStudentDTO();
+
+        createStudentDTO.setDepartmentID(this.department.getId());
+
+        Student student = studentService.create(createStudentDTO);
+
+        mockMvc.perform(delete("/students/" + student.getId()).with(adminAuthority()))
+            .andExpect(status().isOk())
+            .andDo(print());
     }
 }
