@@ -64,5 +64,4 @@
 - If you do not want any data to be initialized in your database, go to `src/main/java/hanu/edu/ems/InitData.java` and comment out the line (around line 134) containing `testData();` before running it for the first time.
 - To reset the database, `drop database ems;` and `create database ems;`, `InitData` will be run again.
 
-Cheers, 
-1801040147@s.hanu.edu.vn <3 1801040052@s.hanu.edu.vn
+Cheers
