@@ -1,10 +1,10 @@
-package hanu.edu.ems.domains.Student;
+package hanu.edu.ems.domains.Department;
 
 import hanu.edu.ems.domains.Department._sample.DepartmentDataSample;
-import hanu.edu.ems.domains.Department.DepartmentRepository;
+import hanu.edu.ems.domains.Department._sample.StudentDataSample;
 import hanu.edu.ems.domains.Department.entity.Department;
+import hanu.edu.ems.domains.Student.StudentRepository;
 import hanu.edu.ems.domains.Student.entity.Student;
-import hanu.edu.ems.domains.Student._sample.StudentDataSample;
 import lombok.extern.slf4j.Slf4j;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;

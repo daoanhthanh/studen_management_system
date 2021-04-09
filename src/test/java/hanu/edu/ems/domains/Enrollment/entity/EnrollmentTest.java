@@ -2,7 +2,7 @@ package hanu.edu.ems.domains.Enrollment.entity;
 
 import hanu.edu.ems.domains.CourseRelease.entity.CourseRelease;
 import hanu.edu.ems.domains.CourseRelease.entity.CourseReleaseTest;
-import hanu.edu.ems.domains.Student.StudentDataSample;
+import hanu.edu.ems.domains.Student._sample.StudentDataSample;
 import hanu.edu.ems.domains.Student.entity.Student;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;

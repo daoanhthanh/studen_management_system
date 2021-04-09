@@ -1,15 +1,16 @@
-package hanu.edu.ems.domains.Student;
+package hanu.edu.ems.domains.Teacher;
 
 import com.fasterxml.jackson.databind.ObjectMapper;
 import hanu.edu.ems.domains.Authority.entity.Authority;
 import hanu.edu.ems.domains.Authority.entity.AuthorityName;
-import hanu.edu.ems.domains.Department._sample.DepartmentDataSample;
 import hanu.edu.ems.domains.Department.DepartmentRepository;
+import hanu.edu.ems.domains.Department._sample.DepartmentDataSample;
 import hanu.edu.ems.domains.Department.entity.Department;
+import hanu.edu.ems.domains.Student.StudentService;
 import hanu.edu.ems.domains.Student.dto.CreateStudentDTO;
 import hanu.edu.ems.domains.Student.dto.UpdateStudentDTO;
 import hanu.edu.ems.domains.Student.entity.Student;
-import hanu.edu.ems.domains.Student._sample.StudentDataSample;
+import hanu.edu.ems.domains.Teacher._sample.StudentDataSample;
 import lombok.extern.slf4j.Slf4j;
 import org.junit.jupiter.api.Test;
 import org.mockito.Mockito;
