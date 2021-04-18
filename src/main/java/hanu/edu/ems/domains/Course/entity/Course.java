@@ -38,7 +38,7 @@ import java.util.List;
 @Data
 @AllArgsConstructor
 @NoArgsConstructor
-@Builder
+@Builder(toBuilder = true)
 public class Course implements TimeStamps {
 
     public static final int MIN_LENGTH_REGISTRATION_CODE = 7;

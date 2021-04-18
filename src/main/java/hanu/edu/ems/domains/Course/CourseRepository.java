@@ -12,11 +12,12 @@ import java.util.List;
 @Repository
 @Transactional(readOnly = true)
 public interface CourseRepository extends JpaRepository<Course, Long> {
+
     List<Course> findAllByDepartmentId(Long departmentID);
 
     Page<Course> findAllByDepartmentId(Long departmentID, Pageable pageable);
 
-    Page<Course> findAllByNameLike(String partialName, Pageable pageable);
+        Page<Course> findAllByNameLike(String partialName, Pageable pageable);
 
     List<Course> findAllByNameLike(String partialName);
 
