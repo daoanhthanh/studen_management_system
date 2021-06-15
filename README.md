@@ -65,3 +65,10 @@
 - To reset the database, `drop database ems;` and `create database ems;`, `InitData` will be run again.
 
 Cheers
+
+**Other contributors:**
+
+* [tangbamiinh](https://github.com/tangbamiinh)
+* [Philip Ng](https://github.com/hwinng)
+* [Đỗ Thị Ngân](https://github.com/DoNgan0902)
+* [zondz](https://github.com/zondz)
