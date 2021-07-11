@@ -6,8 +6,9 @@ import hanu.edu.ems.domains.Course.entity.Course;
 import hanu.edu.ems.domains.CourseRelease.CourseReleaseRepository;
 import hanu.edu.ems.domains.Department.DepartmentRepository;
 import hanu.edu.ems.domains.Department.entity.Department;
+import lombok.RequiredArgsConstructor;
+
 import org.modelmapper.ModelMapper;
-import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
 import org.springframework.stereotype.Service;
@@ -17,6 +18,7 @@ import java.util.Collection;
 import java.util.List;
 
 @Service
+@RequiredArgsConstructor
 public class CourseServiceImpl implements CourseService {
 
     private final CourseRepository courseRepository;
@@ -25,21 +27,14 @@ public class CourseServiceImpl implements CourseService {
 
     private final DepartmentRepository departmentRepository;
 
-    @Autowired
     private ModelMapper modelMapper;
-
-    @Autowired
-    public CourseServiceImpl(CourseRepository courseRepository, CourseReleaseRepository courseReleaseRepository, DepartmentRepository departmentRepository) {
-        this.courseReleaseRepository = courseReleaseRepository;
-        this.courseRepository = courseRepository;
-        this.departmentRepository = departmentRepository;
-    }
 
     @Override
     public Course create(CreateCourseDTO createCourseDTO) {
         Course course = modelMapper.map(createCourseDTO, Course.class);
 
-        Department department = departmentRepository.findById(createCourseDTO.getDepartmentID()).orElseThrow(EntityNotFoundException::new);
+        Department department = departmentRepository.findById(createCourseDTO.getDepartmentID())
+                .orElseThrow(EntityNotFoundException::new);
         course.setDepartment(department);
 
         return courseRepository.save(course);
@@ -49,7 +44,8 @@ public class CourseServiceImpl implements CourseService {
     public Course updateById(Long id, UpdateCourseDTO updateCourseDTO) {
         Course course = courseRepository.findById(id).orElseThrow(EntityNotFoundException::new);
         modelMapper.map(updateCourseDTO, course);
-        Department department = departmentRepository.findById(updateCourseDTO.getDepartmentID()).orElseThrow(EntityNotFoundException::new);
+        Department department = departmentRepository.findById(updateCourseDTO.getDepartmentID())
+                .orElseThrow(EntityNotFoundException::new);
         course.setDepartment(department);
         return courseRepository.save(course);
     }
